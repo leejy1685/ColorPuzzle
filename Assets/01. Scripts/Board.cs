@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public const int Rows = 10;
-    public const int Cols = 8;
+    public const int Rows = 8;
+    public const int Cols = 10;
     
     private Cell[,] _cells;
     
@@ -25,6 +25,8 @@ public class Board : MonoBehaviour
             {
                 int k = i * Cols + j;
                 _cells[i, j] = cell[k];
+                
+
             }
         }
     }

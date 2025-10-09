@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Cell : MonoBehaviour
+public class Cell : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private CellColor color;
     
     private Image _image;
+    
+    public Action OnCellClicked;
     
     public CellColor Color => color;
     
@@ -22,5 +25,9 @@ public class Cell : MonoBehaviour
         _image.color = ColorConverter.ColorCodeToColor(newColor);
     }
 
-
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Left)
+            OnCellClicked.Invoke();
+    }
 }
