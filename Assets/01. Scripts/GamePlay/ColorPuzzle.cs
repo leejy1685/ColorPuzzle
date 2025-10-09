@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ColorPuzzle : MonoBehaviour
 {
-    
     private CellColor _selectedColor;
     private PaletteColor[] _paletteColors;
     private Board _board;
@@ -15,24 +14,13 @@ public class ColorPuzzle : MonoBehaviour
     private void Start()
     {
         RegiseterSelectedColor();
-        
-        _board = FindAnyObjectByType<Board>();
-
-        for (int i = 0; i < Board.Rows; i++)
-        {
-            for (int j = 0; j < Board.Cols; j++)
-            {
-                int x = i;
-                int y = j;
-                _board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
-            }
-        }
-        
+        RegisterCell();
     }
 
     private void OnDestroy()
     {
         ResetSelectedColor();
+        ResetCell();
     }
 
     private void RegiseterSelectedColor()
@@ -62,7 +50,6 @@ public class ColorPuzzle : MonoBehaviour
         _board.Cells[x,y].ChangeColor(_selectedColor);
         
 
-
         for (int i = 0; i < _direction.GetLength(0); i++)
         {
             int nx = x + _direction[i, 0];
@@ -73,6 +60,32 @@ public class ColorPuzzle : MonoBehaviour
             
             if (_board.Cells[nx, ny].Color == prevColor)
                 TrySolve(nx, ny, prevColor);
+        }
+    }
+
+    private void RegisterCell()
+    {
+        _board = FindAnyObjectByType<Board>();
+
+        for (int i = 0; i < Board.Rows; i++)
+        {
+            for (int j = 0; j < Board.Cols; j++)
+            {
+                int x = i;
+                int y = j;
+                _board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
+            }
+        }
+    }
+
+    private void ResetCell()
+    {
+        for (int i = 0; i < Board.Rows; i++)
+        {
+            for (int j = 0; j < Board.Cols; j++)
+            {
+                _board.Cells[i, j].OnCellClicked = null;
+            }
         }
     }
     
