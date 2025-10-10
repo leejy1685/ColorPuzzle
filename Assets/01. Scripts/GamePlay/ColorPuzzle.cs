@@ -12,6 +12,9 @@ public class ColorPuzzle : MonoBehaviour
     private int[,] _direction = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };   //상하좌우
     private LimitedChances _limitedChances;
     private ResetButton _resetButton;
+    private PopUpUI _popUpUI;
+    
+    [SerializeField] private CellColor targetColor;
     
     private void Start()
     {
@@ -19,10 +22,12 @@ public class ColorPuzzle : MonoBehaviour
         _limitedChances = FindAnyObjectByType<LimitedChances>();
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
+        _popUpUI = FindAnyObjectByType<PopUpUI>();
         
         RegiseterSelectedColor();
         RegisterCell();
         RegisterResetButton();
+        RegisterPopUp();
     }
 
     private void OnDestroy()
@@ -30,6 +35,7 @@ public class ColorPuzzle : MonoBehaviour
         ResetSelectedColor();
         ResetCell();
         ResetResetButton();
+        ResetPopUp();
     }
 
     private void RegiseterSelectedColor()
@@ -90,6 +96,7 @@ public class ColorPuzzle : MonoBehaviour
                 int y = j;
                 _board.Cells[i,j].OnCellClicked += () => CountingChances(_board.Cells[x,y].Color);
                 _board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
+                _board.Cells[i,j].OnCellClicked += () => CheckClear();
             }
         }
     }
@@ -116,5 +123,48 @@ public class ColorPuzzle : MonoBehaviour
         _resetButton.OnReset = null;
     }
     
+    private void RegisterPopUp()
+    {
+        _popUpUI.OnRetry += () => _board.ResetBoard();
+        _popUpUI.OnRetry += () => _limitedChances.ResetChances();
+        _popUpUI.OnRetry += () => _popUpUI.gameObject.SetActive(false);
+        
+        _popUpUI.gameObject.SetActive(false);
+    }
     
+    private void ResetPopUp()
+    {
+        _popUpUI.OnRetry = null;
+    }
+
+    private void CheckClear()
+    {
+        bool clear = true;
+        
+        for(int i=0;i<Board.Rows;i++)
+        {
+            for(int j=0;j<Board.Cols;j++)
+            {
+                if(_board.Cells[i,j].Color != targetColor)
+                    clear = false;
+            }
+        }
+        
+        if(clear)
+            ClearPopUp();
+        else if(_limitedChances.Chances == 0)
+            FailPopUp();
+    }
+
+    private void ClearPopUp()
+    {
+        _popUpUI.gameObject.SetActive(true);
+        _popUpUI.ClearPopUp();
+    }
+    
+    private void FailPopUp()
+    {
+        _popUpUI.gameObject.SetActive(true);
+        _popUpUI.FailPopUp();
+    }
 }
