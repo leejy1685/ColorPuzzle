@@ -10,11 +10,13 @@ public class ColorPuzzle : MonoBehaviour
     private PaletteColor[] _paletteColors;
     private Board _board;
     private int[,] _direction = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };   //상하좌우
+    private LimitedChances _limitedChances;
     
     private void Start()
     {
         RegiseterSelectedColor();
         RegisterCell();
+        _limitedChances = FindAnyObjectByType<LimitedChances>();
     }
 
     private void OnDestroy()
@@ -37,7 +39,7 @@ public class ColorPuzzle : MonoBehaviour
     {
         foreach (var paletteColor in _paletteColors)
         {
-            paletteColor.OnColorSelected -= () => _selectedColor = paletteColor.Color;
+            paletteColor.OnColorSelected = null;
         }
     }
     
@@ -49,7 +51,6 @@ public class ColorPuzzle : MonoBehaviour
         
         _board.Cells[x,y].ChangeColor(_selectedColor);
         
-
         for (int i = 0; i < _direction.GetLength(0); i++)
         {
             int nx = x + _direction[i, 0];
@@ -63,6 +64,15 @@ public class ColorPuzzle : MonoBehaviour
         }
     }
 
+    private void CountingChances(CellColor prevColor)
+    {
+        //색이 선택되지 않았거나, 선택된 색이 같은 때 작동하지 않음.
+        if(_selectedColor == CellColor.None || _selectedColor == prevColor)
+            return;
+        
+        _limitedChances.UsingChances();
+    }
+
     private void RegisterCell()
     {
         _board = FindAnyObjectByType<Board>();
@@ -73,6 +83,7 @@ public class ColorPuzzle : MonoBehaviour
             {
                 int x = i;
                 int y = j;
+                _board.Cells[i,j].OnCellClicked += () => CountingChances(_board.Cells[x,y].Color);
                 _board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
             }
         }
