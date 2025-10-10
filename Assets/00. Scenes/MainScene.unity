@@ -6221,6 +6221,7 @@ GameObject:
   - component: {fileID: 1433211257}
   - component: {fileID: 1433211259}
   - component: {fileID: 1433211258}
+  - component: {fileID: 1433211260}
   m_Layer: 5
   m_Name: ResetButton
   m_TagString: Untagged
@@ -6286,6 +6287,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433211256}
   m_CullTransparentMesh: 1
+--- !u!114 &1433211260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433211256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be162d034f9b384a9abe9e46e372c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1462188863
 GameObject:
   m_ObjectHideFlags: 0

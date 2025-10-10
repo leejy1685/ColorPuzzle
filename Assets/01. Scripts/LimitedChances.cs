@@ -27,6 +27,12 @@ public class LimitedChances : MonoBehaviour
         _text.text = _chances.ToString();
     }
     
+    public void ResetChances()
+    {
+        _chances = firstChances;
+        _text.text = _chances.ToString();
+    }
+    
     
     
     

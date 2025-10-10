@@ -11,23 +11,29 @@ public class ColorPuzzle : MonoBehaviour
     private Board _board;
     private int[,] _direction = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };   //상하좌우
     private LimitedChances _limitedChances;
+    private ResetButton _resetButton;
     
     private void Start()
     {
+        _paletteColors = FindObjectsOfType<PaletteColor>();
+        _limitedChances = FindAnyObjectByType<LimitedChances>();
+        _resetButton = FindAnyObjectByType<ResetButton>();
+        _board = FindAnyObjectByType<Board>();
+        
         RegiseterSelectedColor();
         RegisterCell();
-        _limitedChances = FindAnyObjectByType<LimitedChances>();
+        RegisterResetButton();
     }
 
     private void OnDestroy()
     {
         ResetSelectedColor();
         ResetCell();
+        ResetResetButton();
     }
 
     private void RegiseterSelectedColor()
     {
-        _paletteColors = FindObjectsOfType<PaletteColor>();
 
         foreach (var paletteColor in _paletteColors)
         {
@@ -75,7 +81,6 @@ public class ColorPuzzle : MonoBehaviour
 
     private void RegisterCell()
     {
-        _board = FindAnyObjectByType<Board>();
 
         for (int i = 0; i < Board.Rows; i++)
         {
@@ -100,9 +105,16 @@ public class ColorPuzzle : MonoBehaviour
         }
     }
     
-
+    private void RegisterResetButton()
+    {
+        _resetButton.OnReset += () => _board.ResetBoard();
+        _resetButton.OnReset += () => _limitedChances.ResetChances();
+    }
     
-    
+    private void ResetResetButton()
+    {
+        _resetButton.OnReset = null;
+    }
     
     
 }
