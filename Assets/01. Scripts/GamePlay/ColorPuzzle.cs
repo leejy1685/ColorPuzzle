@@ -46,6 +46,8 @@ public class ColorPuzzle : MonoBehaviour
             paletteColor.OnColorSelected += () => paletteColor.SetOutLine(true);    //선택 표시
             paletteColor.OnColorSelected += () => _selectedColor = paletteColor.Color;  //선택
         }
+        
+        _palette.SelectedFirstColor();
     }
 
     private void ResetSelectedColor()

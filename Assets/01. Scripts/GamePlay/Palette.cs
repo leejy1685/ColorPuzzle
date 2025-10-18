@@ -54,6 +54,18 @@ public class Palette : MonoBehaviour
             paletteColor.gameObject.SetActive(isAvailable);
         }
     }
+
+    public void SelectedFirstColor()
+    {
+        foreach (PaletteColor color in _paletteColors)
+        {
+            if (color.gameObject.activeSelf)
+            {
+                color.OnColorSelected.Invoke();
+                break;           
+            }
+        }
+    }
     
     public void UpdatePalette()
     {
