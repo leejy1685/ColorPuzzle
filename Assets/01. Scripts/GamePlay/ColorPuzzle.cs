@@ -7,7 +7,7 @@ using UnityEngine;
 public class ColorPuzzle : MonoBehaviour
 {
     private CellColor _selectedColor;
-    private PaletteColor[] _paletteColors;
+    private Palette _palette;
     private Board _board;
     private int[,] _direction = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };   //상하좌우
     private LimitedChances _limitedChances;
@@ -18,13 +18,13 @@ public class ColorPuzzle : MonoBehaviour
     
     private void Start()
     {
-        _paletteColors = FindObjectsOfType<PaletteColor>();
+        _palette = FindObjectOfType<Palette>();
         _limitedChances = FindAnyObjectByType<LimitedChances>();
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
         _popUpUI = FindAnyObjectByType<PopUpUI>();
         
-        RegiseterSelectedColor();
+        RegisterSelectedColor();
         RegisterCell();
         RegisterResetButton();
         RegisterPopUp();
@@ -38,18 +38,19 @@ public class ColorPuzzle : MonoBehaviour
         ResetPopUp();
     }
 
-    private void RegiseterSelectedColor()
+    private void RegisterSelectedColor()
     {
-
-        foreach (var paletteColor in _paletteColors)
+        foreach (var paletteColor in _palette.PaletteColors)
         {
-            paletteColor.OnColorSelected += () => _selectedColor = paletteColor.Color;
+            paletteColor.OnColorSelected += () => _palette.UpdatePalette();             //팔레트 초기화
+            paletteColor.OnColorSelected += () => paletteColor.SetOutLine(true);    //선택 표시
+            paletteColor.OnColorSelected += () => _selectedColor = paletteColor.Color;  //선택
         }
     }
 
     private void ResetSelectedColor()
     {
-        foreach (var paletteColor in _paletteColors)
+        foreach (var paletteColor in _palette.PaletteColors)
         {
             paletteColor.OnColorSelected = null;
         }

@@ -6,6 +6,8 @@ public class Palette : MonoBehaviour
 {
     private PaletteColor[] _paletteColors;
     private Board _board;
+    
+    public PaletteColor[] PaletteColors => _paletteColors;
 
 
     private void Awake()
@@ -52,4 +54,19 @@ public class Palette : MonoBehaviour
             paletteColor.gameObject.SetActive(isAvailable);
         }
     }
+    
+    public void UpdatePalette()
+    {
+        foreach (PaletteColor color in _paletteColors)
+        {
+            if (color.gameObject.activeSelf)
+            {
+                color.SetOutLine(false);
+            }
+        }
+    }
+    
+
+    
+
 }
