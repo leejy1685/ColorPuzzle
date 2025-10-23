@@ -1,4 +1,5 @@
 using UnityEngine;
+using Random = System.Random;
 
 public enum CellColor 
 {
@@ -27,5 +28,12 @@ public static class ColorConverter
         
         //None
         return Color.white;
+    }
+
+    public static CellColor RandomColor()
+    {
+        int value = new Random().Next(1, 5);
+        
+        return (CellColor) value;
     }
 }

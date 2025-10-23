@@ -17,6 +17,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     {
         _image = GetComponent<Image>();
         _image.color = ColorConverter.ColorCodeToColor(color);
+        
     }
 
     public void ChangeColor(CellColor newColor)
@@ -27,7 +28,11 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.button == PointerEventData.InputButton.Left)
+        if(OnCellClicked == null)
+            return;
+        
+        if (eventData.button == PointerEventData.InputButton.Left)
             OnCellClicked.Invoke();
+        
     }
 }
