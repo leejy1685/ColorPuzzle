@@ -3,13 +3,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Cell : MonoBehaviour, IPointerClickHandler
+public class Cell : MonoBehaviour,IPointerEnterHandler,IPointerDownHandler
 {
     [SerializeField] private CellColor color;
     
     private Image _image;
     
     public Action OnCellClicked;
+    public Action OnCellHovered;
     
     public CellColor Color => color;
     
@@ -17,7 +18,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     {
         _image = GetComponent<Image>();
         _image.color = ColorConverter.ColorCodeToColor(color);
-        
     }
 
     public void ChangeColor(CellColor newColor)
@@ -25,14 +25,24 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         color = newColor;
         _image.color = ColorConverter.ColorCodeToColor(newColor);
     }
-
-    public void OnPointerClick(PointerEventData eventData)
+    
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if(OnCellClicked == null)
-            return;
-        
         if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (OnCellHovered == null)
+                return;
+            OnCellHovered.Invoke();
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (OnCellClicked == null)
+                return;
             OnCellClicked.Invoke();
-        
+        }
     }
 }

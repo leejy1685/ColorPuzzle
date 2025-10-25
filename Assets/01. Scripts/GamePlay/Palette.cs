@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GamePlayPalette : MonoBehaviour
+public class Palette : MonoBehaviour
 {
     private PaletteColor[] _paletteColors;
     private Board _board;
@@ -15,15 +15,10 @@ public class GamePlayPalette : MonoBehaviour
         _paletteColors = GetComponentsInChildren<PaletteColor>();
     }
     
-    private void Start()
+    public void UpdatePaletteVisibility()
     {
         _board = FindAnyObjectByType<Board>();
-
-        UpdatePaletteVisibility();
-    }
-    
-    private void UpdatePaletteVisibility()
-    {
+        
         //활성화 여부를 판단하는 불변수를 가지고 있는 딕셔너리
          Dictionary<CellColor, bool> colorAvailability;
          colorAvailability = new Dictionary<CellColor, bool>
