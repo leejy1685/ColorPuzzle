@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Palette : MonoBehaviour
+public class GamePlayPalette : MonoBehaviour
 {
     private PaletteColor[] _paletteColors;
     private Board _board;

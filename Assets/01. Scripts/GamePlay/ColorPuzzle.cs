@@ -7,27 +7,30 @@ using UnityEngine;
 public class ColorPuzzle : MonoBehaviour
 {
     private CellColor _selectedColor;
-    private Palette _palette;
+    private GamePlayPalette _palette;
     private Board _board;
     private int[,] _direction = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };   //상하좌우
     private LimitedChances _limitedChances;
     private ResetButton _resetButton;
     private PopUpUI _popUpUI;
+    private TargetColorText _targetColorText;
     
     [SerializeField] private CellColor targetColor;
     
     private void Start()
     {
-        _palette = FindObjectOfType<Palette>();
+        _palette = FindObjectOfType<GamePlayPalette>();
         _limitedChances = FindAnyObjectByType<LimitedChances>();
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
         _popUpUI = FindAnyObjectByType<PopUpUI>();
+        _targetColorText = FindAnyObjectByType<TargetColorText>();
         
         RegisterSelectedColor();
         RegisterCell();
         RegisterResetButton();
         RegisterPopUp();
+        _targetColorText.SetTargetColor(targetColor);
     }
 
     private void OnDestroy()
