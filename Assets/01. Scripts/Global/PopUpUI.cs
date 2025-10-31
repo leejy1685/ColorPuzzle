@@ -25,7 +25,7 @@ public class PopUpUI : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonUp(0))
+        if(Input.GetMouseButtonDown(0))
             OnRetry.Invoke();
     }
 }

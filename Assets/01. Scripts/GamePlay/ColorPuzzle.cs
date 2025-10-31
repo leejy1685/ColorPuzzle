@@ -9,7 +9,6 @@ public class ColorPuzzle : MonoBehaviour
     private CellColor _selectedColor;
     private Palette _palette;
     private Board _board;
-    private int[,] _direction = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };   //상하좌우
     private LimitedChances _limitedChances;
     private ResetButton _resetButton;
     private PopUpUI _popUpUI;
@@ -63,26 +62,47 @@ public class ColorPuzzle : MonoBehaviour
         }
     }
     
-    private void TrySolve(int x,int y,CellColor prevColor)
+    public void FloodFill(int startR, int startC, CellColor newColor)
     {
-        //색이 선택되지 않았거나, 선택된 색이 같은 때 작동하지 않음.
-        if(_selectedColor == CellColor.None || _selectedColor == prevColor)
+        // 1. 현재 플러드 영역의 색상 (Flood-It에서 변경될 색상)
+        CellColor oldColor = _board.Cells[startR, startC].Color; 
+
+        // 2. 이미 같은 색이면 종료 (불필요한 이동 방지)
+        if (oldColor == newColor)
             return;
-        
-        _board.Cells[x,y].ChangeColor(_selectedColor);
-        
-        for (int i = 0; i < _direction.GetLength(0); i++)
+
+        // BFS (Queue)를 사용하여 구현하는 것이 재귀(DFS) 스택 오버플로우 방지에 더 안전합니다.
+        var queue = new Queue<(int r, int c)>();
+        queue.Enqueue((startR, startC));
+
+        // 시작 셀의 색상 변경 (변경은 큐에 넣기 전에 한 번만 수행)
+        _board.Cells[startR, startC].ChangeColor(newColor); 
+
+        //방향
+        int[] dr = { 1, -1, 0, 0 }; 
+        int[] dc = { 0, 0, 1, -1 };
+
+        while (queue.Count > 0)
         {
-            int nx = x + _direction[i, 0];
-            int ny = y + _direction[i, 1];
-            
-            if (nx < 0 || nx >= Board.Rows || ny < 0 || ny >= Board.Cols)
-                continue;
-            
-            if (_board.Cells[nx, ny].Color == prevColor)
-                TrySolve(nx, ny, prevColor);
+            var (r, c) = queue.Dequeue();
+
+            for (int i = 0; i < dr.Length; i++)
+            {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+
+                // 3. 경계 및 색상 조건 확인
+                if (nr >= 0 && nr < Board.Rows && nc >= 0 && nc < Board.Cols && 
+                    _board.Cells[nr, nc].Color == oldColor) // 인접 셀이 '이전 플러드 영역의 색상'과 같으면
+                {
+                    _board.Cells[nr, nc].ChangeColor(newColor); // 새 색상으로 칠하고
+                    queue.Enqueue((nr, nc));   // 큐에 추가
+                }
+            }
         }
     }
+    
+
 
     private void CountingChances(CellColor prevColor)
     {
@@ -103,7 +123,8 @@ public class ColorPuzzle : MonoBehaviour
                 int x = i;
                 int y = j;
                 _board.Cells[i,j].OnCellClicked += () => CountingChances(_board.Cells[x,y].Color);
-                _board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
+                _board.Cells[i,j].OnCellClicked += () => FloodFill(x,y,_selectedColor);;
+                //_board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
                 _board.Cells[i,j].OnCellClicked += () => CheckClear();
             }
         }
