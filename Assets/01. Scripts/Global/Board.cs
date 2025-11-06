@@ -9,6 +9,7 @@ public class Board : MonoBehaviour
     private CellColor[,] _firstCells;
     
     public Cell[,] Cells => _cells;
+    public CellColor[,] FirstCells => _firstCells;
 
     private void Awake()
     {
