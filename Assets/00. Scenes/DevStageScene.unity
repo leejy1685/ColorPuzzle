@@ -9408,10 +9408,22 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1753706954851648328, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
       propertyPath: m_Name
-      value: PopUpUI
+      value: AlertPopUp
       objectReference: {fileID: 0}
-    - target: {fileID: 1753706954851648328, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7638799060912622698, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}

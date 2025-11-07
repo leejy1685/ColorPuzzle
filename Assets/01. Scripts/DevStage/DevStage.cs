@@ -20,16 +20,16 @@ public class DevStage : MonoBehaviour
         
         
         //Test Code
-        var solver = new BFSSolver();
-
-        if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
-        {
-            Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
-        }
-        else
-        {
-            Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
-        }
+        // var solver = new BFSSolver();
+        //
+        // if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
+        // {
+        //     Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
+        // }
+        // else
+        // {
+        //     Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
+        // }
     }
 
     private void Update()

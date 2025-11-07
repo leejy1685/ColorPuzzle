@@ -1778,6 +1778,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetColor: 3
+  titleText: 
+  clearText: Puzzle Clear!!
+  failText: Puzzle Fail...
 --- !u!4 &393639637
 Transform:
   m_ObjectHideFlags: 0
@@ -9385,6 +9388,22 @@ PrefabInstance:
     - target: {fileID: 1753706954851648328, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291877793029255799, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7638799060912622698, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
       propertyPath: m_Pivot.x

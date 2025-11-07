@@ -11,10 +11,14 @@ public class ColorPuzzle : MonoBehaviour
     private Board _board;
     private LimitedChances _limitedChances;
     private ResetButton _resetButton;
-    private PopUpUI _popUpUI;
+    private AlertPopUp _alertPopUp;
     private TargetColorText _targetColorText;
     
     [SerializeField] private CellColor targetColor;
+    [SerializeField] private string titleText;
+    [SerializeField][TextArea(2,2)] private string clearText;
+    [SerializeField][TextArea(2,2)] private string failText;
+    
     
     private void Start()
     {
@@ -22,7 +26,7 @@ public class ColorPuzzle : MonoBehaviour
         _limitedChances = FindAnyObjectByType<LimitedChances>();
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
-        _popUpUI = FindAnyObjectByType<PopUpUI>();
+        _alertPopUp = FindAnyObjectByType<AlertPopUp>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         
         RegisterSelectedColor();
@@ -154,16 +158,16 @@ public class ColorPuzzle : MonoBehaviour
     
     private void RegisterPopUp()
     {
-        _popUpUI.OnRetry += () => _board.ResetBoard();
-        _popUpUI.OnRetry += () => _limitedChances.ResetChances();
-        _popUpUI.OnRetry += () => _popUpUI.gameObject.SetActive(false);
+        _alertPopUp.OkButton.onClick.AddListener(() => _board.ResetBoard());
+        _alertPopUp.OkButton.onClick.AddListener(() => _limitedChances.ResetChances());
+        _alertPopUp.OkButton.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(false));
         
-        _popUpUI.gameObject.SetActive(false);
+        _alertPopUp.gameObject.SetActive(false);
     }
     
     private void ResetPopUp()
     {
-        _popUpUI.OnRetry = null;
+        _alertPopUp.OkButton.onClick.RemoveAllListeners();
     }
 
     private void CheckClear()
@@ -187,13 +191,13 @@ public class ColorPuzzle : MonoBehaviour
 
     private void ClearPopUp()
     {
-        _popUpUI.gameObject.SetActive(true);
-        _popUpUI.ClearPopUp();
+        _alertPopUp.gameObject.SetActive(true);
+        _alertPopUp.SetDescription(clearText);
     }
     
     private void FailPopUp()
     {
-        _popUpUI.gameObject.SetActive(true);
-        _popUpUI.FailPopUp();
+        _alertPopUp.gameObject.SetActive(true);
+        _alertPopUp.SetDescription(failText);
     }
 }
