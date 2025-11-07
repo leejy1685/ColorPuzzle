@@ -8,17 +8,27 @@ public class DevStage : MonoBehaviour
     private CellColor _selectedColor;
     private Palette _palette;
     private Board _board;
+    private AlertPopUp _alertPopUp;
     private bool _isHovered;
+    private SetTargetColorButton _setTargetColorButton;
+    private TargetColorText _targetColorText;
+    private Dictionary<CellColor,Action> _targetColorActions;   //기능 삭제를 위해 추가
+
+    [SerializeField] [TextArea(2, 2)] private string targetColorText;
 
     private void Start()
     {
         _palette = FindAnyObjectByType<Palette>();
         _board = FindAnyObjectByType<Board>();
+        _alertPopUp = FindAnyObjectByType<AlertPopUp>();
+        _setTargetColorButton = FindAnyObjectByType<SetTargetColorButton>();
+        _targetColorText = FindAnyObjectByType<TargetColorText>();
         
         RegisterSelectedColor();
         RegisterCell();
-        
-        
+        RegisterSetTargetColorButton();
+        RegisterAlertPopUp();
+
         //Test Code
         // var solver = new BFSSolver();
         //
@@ -44,8 +54,11 @@ public class DevStage : MonoBehaviour
     {
         ResetSelectedColor();
         ResetCell();
+        ResetSetTargetColorButton();
+        ResetAlertPopUp();
     }
     
+    //팔렛트 색 선택 기능 추가
     private void RegisterSelectedColor()
     {
         foreach (var paletteColor in _palette.PaletteColors)
@@ -58,6 +71,7 @@ public class DevStage : MonoBehaviour
         _palette.SelectedFirstColor();
     }
 
+    //팔렛트 색 선택 기능 삭제
     private void ResetSelectedColor()
     {
         foreach (var paletteColor in _palette.PaletteColors)
@@ -66,6 +80,7 @@ public class DevStage : MonoBehaviour
         }
     }
 
+    //셀 클릭 기능 추가
     private void RegisterCell()
     {
         for (int i = 0; i < Board.Rows; i++)
@@ -80,12 +95,14 @@ public class DevStage : MonoBehaviour
         }
     }
 
+    //PointEnter를 위한 체인지 컬러
     private void ChangeColor(int x, int y, CellColor color)
     {
         if(_isHovered) 
             _board.Cells[x,y].ChangeColor(color);
     }
     
+    //셀 클릭 기능 삭제
     private void ResetCell()
     {
         for (int i = 0; i < Board.Rows; i++)
@@ -96,5 +113,57 @@ public class DevStage : MonoBehaviour
                 _board.Cells[i, j].OnCellHovered = null;
             }
         }
+    }
+
+    //타겟 컬러 설정 버튼 기능 추가
+    private void RegisterSetTargetColorButton()
+    {
+        _setTargetColorButton.Button.onClick.AddListener(OnClickSetTargetColorButton);
+        _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(true));
+        _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.SetDescription(targetColorText));
+    }
+    
+    //타겟 컬러 설정 버튼 기능 삭제
+    private void ResetSetTargetColorButton()
+    {
+        _setTargetColorButton.Button.onClick.RemoveAllListeners();
+    }
+
+    //타겟 컬러 설정 버튼 기능(팔렛트 색 선택 시 타겟 컬러 설정)
+    private void OnClickSetTargetColorButton()
+    {
+        _targetColorActions = new Dictionary<CellColor, Action>();
+        
+        foreach (var paletteColor in _palette.PaletteColors)
+        {
+            _targetColorActions.Add(paletteColor.Color,
+                () => OnSelectSetTargetColor(paletteColor.Color));
+            paletteColor.OnColorSelected += _targetColorActions[paletteColor.Color];
+        }
+    }
+
+    //타겟 컬러 설정 후, 팔렛트에 기능 삭제
+    private void OnSelectSetTargetColor(CellColor color)
+    {
+        _targetColorText.SetTargetColor(color);
+        
+        foreach (var paletteColor in _palette.PaletteColors)
+        {
+            paletteColor.OnColorSelected -= _targetColorActions[paletteColor.Color];
+        }
+    }
+    
+    //알람 팝업 기능 등록
+    private void RegisterAlertPopUp()
+    {
+        _alertPopUp.OkButton.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(false));
+        
+        _alertPopUp.gameObject.SetActive(false);
+    }
+
+    //알람 팝업 기능 삭제
+    private void ResetAlertPopUp()
+    {
+        _alertPopUp.OkButton.onClick.RemoveAllListeners();
     }
 }

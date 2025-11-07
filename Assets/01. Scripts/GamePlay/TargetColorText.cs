@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class TargetColorText : MonoBehaviour
 {
     private TextMeshProUGUI _text; 
+    private CellColor _color;
     
     private void Awake()
     {
@@ -15,6 +16,7 @@ public class TargetColorText : MonoBehaviour
     
     public void SetTargetColor(CellColor color)
     {
+        _color = color;
         _text.text = color.ToString();
         _text.color = ColorConverter.ColorCodeToColor(color);
     }
