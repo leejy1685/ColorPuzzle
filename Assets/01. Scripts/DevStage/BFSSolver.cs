@@ -39,23 +39,23 @@ public class BFSSolver
             // 3. 다음 상태 생성
             var nextMoveColors = SolverHelpers.GetAdjacentColors(current.Colors); 
             
-            // if (current.Colors[0, 0] != targetColor)
-            // {
-            //     // 보드 전체 셀 개수
-            //     const int TotalCells = SolverHelpers.Rows * SolverHelpers.Cols;
-            //
-            //     // 목표 색상으로 칠했을 때 플러드 영역이 보드 전체를 덮을 수 있는지 체크
-            //     var tempColors = (CellColor[,])current.Colors.Clone();
-            //     SolverHelpers.FloodFillState(tempColors, targetColor);
-            //
-            //     var finalRegion = SolverHelpers.GetFloodRegionCells(tempColors);
-            //
-            //     if (finalRegion.Count == TotalCells)
-            //     {
-            //         // 목표 색상으로 마지막 이동이 가능하다면 후보에 추가 (중복 방지)
-            //         nextMoveColors.Add(targetColor);
-            //     }
-            // }
+            if (current.Colors[0, 0] != targetColor)
+            {
+                // 보드 전체 셀 개수
+                const int TotalCells = SolverHelpers.Rows * SolverHelpers.Cols;
+            
+                // 목표 색상으로 칠했을 때 플러드 영역이 보드 전체를 덮을 수 있는지 체크
+                var tempColors = (CellColor[,])current.Colors.Clone();
+                SolverHelpers.FloodFillState(tempColors, targetColor);
+            
+                var finalRegion = SolverHelpers.GetFloodRegionCells(tempColors);
+            
+                if (finalRegion.Count == TotalCells)
+                {
+                    // 목표 색상으로 마지막 이동이 가능하다면 후보에 추가 (중복 방지)
+                    nextMoveColors.Add(targetColor);
+                }
+            }
             
             foreach (var color in nextMoveColors)
             {
