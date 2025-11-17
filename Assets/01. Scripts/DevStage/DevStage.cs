@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class DevStage : MonoBehaviour
@@ -20,26 +21,36 @@ public class DevStage : MonoBehaviour
     {
         _palette = FindAnyObjectByType<Palette>();
         _board = FindAnyObjectByType<Board>();
+        
+        //이번에 추가한 코드
         _alertPopUp = FindAnyObjectByType<AlertPopUp>();
         _setTargetColorButton = FindAnyObjectByType<SetTargetColorButton>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         
-        RegisterSelectedColor();
-        RegisterCell();
         RegisterSetTargetColorButton();
         RegisterAlertPopUp();
+        //여기까지
+        
+        RegisterSelectedColor();
+        RegisterCell();
 
         //Test Code
-        // var solver = new BFSSolver();
-        //
-        // if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
-        // {
-        //     Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
-        // }
-        // else
-        // {
-        //     Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
-        // }
+        var solver = new BFSSolver();
+        
+        if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
+        {
+            Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
+        }
+        else
+        {
+            Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
+        }
+        
+        StageData saveData = new StageData(1, minimumMoves, CellColor.Red, _board.FirstCells);
+        StageSaveLoader.SaveStage(saveData);
+        
+        StageData loadData = StageSaveLoader.LoadStage(1);
+        loadData.Print();
     }
 
     private void Update()
