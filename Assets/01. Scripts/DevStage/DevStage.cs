@@ -46,11 +46,9 @@ public class DevStage : MonoBehaviour
             Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
         }
         
-        StageData saveData = new StageData(1, minimumMoves, CellColor.Red, _board.FirstCells);
+        StageData saveData = new StageData(minimumMoves, CellColor.Red, _board.FirstCells);
         StageSaveLoader.SaveStage(saveData);
         
-        StageData loadData = StageSaveLoader.LoadStage(1);
-        loadData.Print();
     }
 
     private void Update()
