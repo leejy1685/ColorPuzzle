@@ -8,6 +8,7 @@ public class StageData
     public CellColor targetColor;
     public CellColor[,] board;
     
+    //생성자
     public StageData(int chances, CellColor targetColor, CellColor[,] board)
     {
         this.chances = chances;
@@ -15,6 +16,7 @@ public class StageData
         this.board = board;
     }
 
+    //Test Code
     public void Print()
     {
         Debug.Log(chances);
