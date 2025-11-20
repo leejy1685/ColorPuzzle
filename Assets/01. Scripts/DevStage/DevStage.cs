@@ -15,8 +15,7 @@ public class DevStage : MonoBehaviour
     private TargetColorText _targetColorText;
     private Dictionary<CellColor,Action> _targetColorActions;   //기능 삭제를 위해 추가
     private ConfirmPopUp _confirmPopUp;
-
-    [SerializeField] [TextArea(2, 2)] private string targetColorText;
+    private PopUpTexts _popUpTexts;
 
     private void Start()
     {
@@ -26,6 +25,7 @@ public class DevStage : MonoBehaviour
         _setTargetColorButton = FindAnyObjectByType<SetTargetColorButton>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         _confirmPopUp = FindAnyObjectByType<ConfirmPopUp>();
+        _popUpTexts = GetComponent<PopUpTexts>();
         
         
         RegisterSetTargetColorButton();
@@ -34,19 +34,19 @@ public class DevStage : MonoBehaviour
         RegisterCell();
 
         //Test Code
-        var solver = new BFSSolver();
-        
-        if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
-        {
-            Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
-        }
-        else
-        {
-            Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
-        }
-        
-        StageData saveData = new StageData(minimumMoves, CellColor.Red, _board.FirstCells);
-        StageSaveLoader.SaveStage(saveData);
+        // var solver = new BFSSolver();
+        //
+        // if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
+        // {
+        //     Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
+        // }
+        // else
+        // {
+        //     Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
+        // }
+        //
+        // StageData saveData = new StageData(minimumMoves, CellColor.Red, _board.FirstCells);
+        // StageSaveLoader.SaveStage(saveData);
         
     }
 
@@ -91,7 +91,6 @@ public class DevStage : MonoBehaviour
     }
     
     #endregion
-
 
     #region Cell
 
@@ -139,7 +138,7 @@ public class DevStage : MonoBehaviour
     {
         _setTargetColorButton.Button.onClick.AddListener(OnClickSetTargetColorButton);
         _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(true));
-        _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.SetDescription(targetColorText));
+        _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.SetDescription(_popUpTexts.TargetColorText));
     }
     
     //타겟 컬러 설정 버튼 기능 삭제
