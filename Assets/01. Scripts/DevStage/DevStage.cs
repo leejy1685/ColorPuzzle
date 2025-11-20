@@ -222,7 +222,9 @@ public class DevStage : MonoBehaviour
             
             //팝업 창 버튼에 기능 추가
             _confirmPopUp.YesButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
-        }
+            StageData saveData = new StageData(minimumMoves, _targetColorText.Color, _board.CurrentCells);
+            _confirmPopUp.YesButton.onClick.AddListener(() => StageSaveLoader.SaveStage(saveData));
+        }   
         //계산 실패 시 알람
         else
         {
