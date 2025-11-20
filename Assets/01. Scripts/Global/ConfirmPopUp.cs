@@ -21,4 +21,10 @@ public class ConfirmPopUp : MonoBehaviour
     {
         description.text = text;
     }
+
+    public void ResetButton()
+    {
+        yesButton.onClick.RemoveAllListeners();
+        noButton.onClick.RemoveAllListeners();
+    }
 }

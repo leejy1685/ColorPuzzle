@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DevStage : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class DevStage : MonoBehaviour
     private Dictionary<CellColor,Action> _targetColorActions;   //기능 삭제를 위해 추가
     private ConfirmPopUp _confirmPopUp;
     private PopUpTexts _popUpTexts;
+    private CompleteButton _completeButton;
 
     private void Start()
     {
@@ -26,12 +28,14 @@ public class DevStage : MonoBehaviour
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         _confirmPopUp = FindAnyObjectByType<ConfirmPopUp>();
         _popUpTexts = GetComponent<PopUpTexts>();
+        _completeButton = FindAnyObjectByType<CompleteButton>();
         
         
         RegisterSetTargetColorButton();
         RegisterPopUp();
         RegisterSelectedColor();
         RegisterCell();
+        RegisterCompleteButton();
 
         //Test Code
         // var solver = new BFSSolver();
@@ -64,6 +68,7 @@ public class DevStage : MonoBehaviour
         ResetCell();
         ResetSetTargetColorButton();
         ResetPopUp();
+        ResetCompleteButton();
     }
 
     #region pallette
@@ -193,6 +198,43 @@ public class DevStage : MonoBehaviour
         _confirmPopUp.NoButton.onClick.RemoveAllListeners();
     }
     
-    
+    #endregion
+
+    #region CompleteButton
+
+    private void RegisterCompleteButton()
+    {
+        _completeButton.Button.onClick.AddListener(Complete);
+    }
+
+    private void Complete()
+    {
+        var solver = new BFSSolver();
+        
+        //최소 횟수 계산
+        if (solver.TrySolve(_board.CurrentCells, _targetColorText.Color, out int minimumMoves) && 
+            _targetColorText.Color != CellColor.None)
+        {
+            //팡업 창 활성화
+            _confirmPopUp.gameObject.SetActive(true);
+            string text = String.Format(_popUpTexts.CompleteText, minimumMoves);
+            _confirmPopUp.SetDescription(text);
+            
+            //팝업 창 버튼에 기능 추가
+            _confirmPopUp.YesButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
+        }
+        //계산 실패 시 알람
+        else
+        {
+            _alertPopUp.gameObject.SetActive(true);
+            _alertPopUp.SetDescription(_popUpTexts.FailText);
+        }
+    }
+
+    private void ResetCompleteButton()
+    {
+        _completeButton.Button.onClick.RemoveAllListeners();   
+    }
+
     #endregion
 }

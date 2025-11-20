@@ -32,7 +32,6 @@ public class BFSSolver
             {
                 // ★★★ out 매개변수에 최저 횟수(Depth) 할당 ★★★
                 minMoves = current.Depth;
-                Debug.Log($"Optimal solution found in {minMoves} moves.");
                 return true; // 성공 시 true 반환
             }
             

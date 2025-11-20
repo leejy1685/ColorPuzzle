@@ -11,6 +11,24 @@ public class Board : MonoBehaviour
     public Cell[,] Cells => _cells;
     public CellColor[,] FirstCells => _firstCells;
 
+    public CellColor[,] CurrentCells
+    {
+        get
+        {
+            CellColor[,] cells = new CellColor[Rows, Cols];
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Cols; j++)
+                {
+                    cells[i, j] = _cells[i, j].Color;
+                }
+            }
+            return cells;
+        }
+    }
+
+    
+    //임시 코드
     private void Awake()
     {
         Convert1DTo2D();
@@ -32,6 +50,7 @@ public class Board : MonoBehaviour
             }
         }
     }
+    //여기까지
 
     public void ResetBoard()
     {

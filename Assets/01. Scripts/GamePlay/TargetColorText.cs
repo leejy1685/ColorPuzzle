@@ -9,6 +9,8 @@ public class TargetColorText : MonoBehaviour
     private TextMeshProUGUI _text; 
     private CellColor _color;
     
+    public CellColor Color => _color;
+    
     private void Awake()
     {
         _text = GetComponent<TextMeshProUGUI>();

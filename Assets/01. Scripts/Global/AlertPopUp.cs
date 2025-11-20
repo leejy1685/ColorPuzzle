@@ -20,6 +20,11 @@ public class AlertPopUp : MonoBehaviour
     {
         description.text = text;
     }
+    
+    public void ResetButton()
+    {
+        okButton.onClick.RemoveAllListeners();
+    }
 
 
 }
