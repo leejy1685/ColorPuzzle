@@ -39,22 +39,6 @@ public class DevStage : MonoBehaviour
         RegisterSelectedColor();
         RegisterCell();
         RegisterCompleteButton();
-
-        //Test Code
-        // var solver = new BFSSolver();
-        //
-        // if (solver.TrySolve(_board.FirstCells, CellColor.Red, out int minimumMoves))
-        // {
-        //     Debug.Log($"✅ 현재 보드의 최저 횟수는 {minimumMoves}회 입니다.");
-        // }
-        // else
-        // {
-        //     Debug.Log("❌ 현재 보드 상태로는 목표를 달성할 수 없습니다.");
-        // }
-        //
-        // StageData saveData = new StageData(minimumMoves, CellColor.Red, _board.FirstCells);
-        // StageSaveLoader.SaveStage(saveData);
-        
     }
 
     private void Update()
@@ -149,11 +133,19 @@ public class DevStage : MonoBehaviour
 
     private void SetTargetColorAlert()
     {
+        // 1. 오브젝트 생성
         GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
+        
+        // 2. 생성한 오브젝트는 UI이기 때문에 캔버스의 자식으로 설정
         go.transform.SetParent(_canvas.transform);
+        
+        // 3. 위치 초기화
         go.transform.localPosition = Vector3.zero;
+        
+        // 4. 생성된 오브젝트에서 원하는 컴포넌트를 가져오기
         if (go.TryGetComponent(out AlertPopUp alertPopUp))
         {
+            // 5. 알림창 문구 수정
             alertPopUp.SetDescription(_popUpTexts.TargetColorText);
         }
     }
@@ -200,12 +192,10 @@ public class DevStage : MonoBehaviour
     private void Complete()
     {
         var solver = new BFSSolver();
-        
-        //최소 횟수 계산
+ 
         if (solver.TrySolve(_board.CurrentCells, _targetColorText.Color, out int minimumMoves) && 
             _targetColorText.Color != CellColor.None)
         {
-            //팡업 창 활성화
             GameObject go = ObjectPool.Get(PoolIndex.Confirm, _popUpList.ConfirmPopUp);
             go.transform.SetParent(_canvas.transform);
             go.transform.localPosition = Vector3.zero;
