@@ -19,6 +19,12 @@ public class DevStage : MonoBehaviour
     private PopUpList _popUpList;
     private Canvas _canvas;
 
+    private void Awake()
+    {
+        _popUpTexts = GetComponent<PopUpTexts>();
+        _popUpList = GetComponent<PopUpList>();
+    }
+
     private void Start()
     {
         _palette = FindAnyObjectByType<Palette>();
@@ -27,8 +33,6 @@ public class DevStage : MonoBehaviour
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         _completeButton = FindAnyObjectByType<CompleteButton>();
         _canvas = FindAnyObjectByType<Canvas>();
-        _popUpTexts = GetComponent<PopUpTexts>();
-        _popUpList = GetComponent<PopUpList>();
         
         
         RegisterSetTargetColorButton();
