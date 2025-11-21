@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 7638799060912622698}
   - component: {fileID: 6626149586797638506}
   m_Layer: 5
-  m_Name: PopUpUI
+  m_Name: AlertPopUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

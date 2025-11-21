@@ -21,9 +21,15 @@ public class AlertPopUp : MonoBehaviour
         description.text = text;
     }
     
-    public void ResetButton()
+
+    private void OnEnable()
     {
-        okButton.onClick.RemoveAllListeners();
+        OkButton.onClick.AddListener(()=> ObjectPool.Release(PoolIndex.Alert,gameObject));
+    }
+
+    public void OnDisable()
+    {
+        OkButton.onClick.RemoveAllListeners();
     }
 
 

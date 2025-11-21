@@ -10,29 +10,28 @@ public class DevStage : MonoBehaviour
     private CellColor _selectedColor;
     private Palette _palette;
     private Board _board;
-    private AlertPopUp _alertPopUp;
     private bool _isHovered;
     private SetTargetColorButton _setTargetColorButton;
     private TargetColorText _targetColorText;
     private Dictionary<CellColor,Action> _targetColorActions;   //기능 삭제를 위해 추가
-    private ConfirmPopUp _confirmPopUp;
     private PopUpTexts _popUpTexts;
     private CompleteButton _completeButton;
+    private PopUpList _popUpList;
+    private Canvas _canvas;
 
     private void Start()
     {
         _palette = FindAnyObjectByType<Palette>();
         _board = FindAnyObjectByType<Board>();
-        _alertPopUp = FindAnyObjectByType<AlertPopUp>();
         _setTargetColorButton = FindAnyObjectByType<SetTargetColorButton>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
-        _confirmPopUp = FindAnyObjectByType<ConfirmPopUp>();
-        _popUpTexts = GetComponent<PopUpTexts>();
         _completeButton = FindAnyObjectByType<CompleteButton>();
+        _canvas = FindAnyObjectByType<Canvas>();
+        _popUpTexts = GetComponent<PopUpTexts>();
+        _popUpList = GetComponent<PopUpList>();
         
         
         RegisterSetTargetColorButton();
-        RegisterPopUp();
         RegisterSelectedColor();
         RegisterCell();
         RegisterCompleteButton();
@@ -67,7 +66,6 @@ public class DevStage : MonoBehaviour
         ResetSelectedColor();
         ResetCell();
         ResetSetTargetColorButton();
-        ResetPopUp();
         ResetCompleteButton();
     }
 
@@ -142,8 +140,18 @@ public class DevStage : MonoBehaviour
     private void RegisterSetTargetColorButton()
     {
         _setTargetColorButton.Button.onClick.AddListener(OnClickSetTargetColorButton);
-        _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(true));
-        _setTargetColorButton.Button.onClick.AddListener(() => _alertPopUp.SetDescription(_popUpTexts.TargetColorText));
+        _setTargetColorButton.Button.onClick.AddListener(() => SetTargetColorAlert());
+    }
+
+    private void SetTargetColorAlert()
+    {
+        GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
+        go.transform.SetParent(_canvas.transform);
+        go.transform.localPosition = Vector3.zero;
+        if (go.TryGetComponent(out AlertPopUp alertPopUp))
+        {
+            alertPopUp.SetDescription(_popUpTexts.TargetColorText);
+        }
     }
     
     //타겟 컬러 설정 버튼 기능 삭제
@@ -177,28 +185,6 @@ public class DevStage : MonoBehaviour
     }
     
     #endregion
-    
-    #region PopUp
-    //알람 팝업 기능 등록
-    private void RegisterPopUp()
-    {
-        _alertPopUp.OkButton.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(false));
-        _confirmPopUp.YesButton.onClick.AddListener(() => _confirmPopUp.gameObject.SetActive(false));
-        _confirmPopUp.NoButton.onClick.AddListener(() => _confirmPopUp.gameObject.SetActive(false));
-        
-        _alertPopUp.gameObject.SetActive(false);
-        _confirmPopUp.gameObject.SetActive(false);
-    }
-
-    //알람 팝업 기능 삭제
-    private void ResetPopUp()
-    {
-        _alertPopUp.OkButton.onClick.RemoveAllListeners();
-        _confirmPopUp.YesButton.onClick.RemoveAllListeners();
-        _confirmPopUp.NoButton.onClick.RemoveAllListeners();
-    }
-    
-    #endregion
 
     #region CompleteButton
 
@@ -216,20 +202,30 @@ public class DevStage : MonoBehaviour
             _targetColorText.Color != CellColor.None)
         {
             //팡업 창 활성화
-            _confirmPopUp.gameObject.SetActive(true);
-            string text = String.Format(_popUpTexts.CompleteText, minimumMoves);
-            _confirmPopUp.SetDescription(text);
-            
-            //팝업 창 버튼에 기능 추가
-            _confirmPopUp.YesButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
-            StageData saveData = new StageData(minimumMoves, _targetColorText.Color, _board.CurrentCells);
-            _confirmPopUp.YesButton.onClick.AddListener(() => StageSaveLoader.SaveStage(saveData));
+            GameObject go = ObjectPool.Get(PoolIndex.Confirm, _popUpList.ConfirmPopUp);
+            go.transform.SetParent(_canvas.transform);
+            go.transform.localPosition = Vector3.zero;
+            if (go.TryGetComponent(out ConfirmPopUp _confirmPopUp))
+            {
+                string text = String.Format(_popUpTexts.CompleteText, minimumMoves);
+                _confirmPopUp.SetDescription(text);
+                
+                //팝업 창 버튼에 기능 추가
+                _confirmPopUp.YesButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
+                StageData saveData = new StageData(minimumMoves, _targetColorText.Color, _board.CurrentCells);
+                _confirmPopUp.YesButton.onClick.AddListener(() => StageSaveLoader.SaveStage(saveData));
+            }
         }   
         //계산 실패 시 알람
         else
         {
-            _alertPopUp.gameObject.SetActive(true);
-            _alertPopUp.SetDescription(_popUpTexts.FailText);
+            GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
+            go.transform.SetParent(_canvas.transform);
+            go.transform.localPosition = Vector3.zero;
+            if (go.TryGetComponent(out AlertPopUp alertPopUp))
+            {
+                alertPopUp.SetDescription(_popUpTexts.FailText);
+            }
         }
     }
 

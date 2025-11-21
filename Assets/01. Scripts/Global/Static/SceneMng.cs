@@ -8,7 +8,6 @@ public enum SceneName
     DevStageScene
 }
 
-
 public static class SceneMng
 {
     public static void ChangeScene(SceneName sceneName)

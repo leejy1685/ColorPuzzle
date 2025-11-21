@@ -22,7 +22,13 @@ public class ConfirmPopUp : MonoBehaviour
         description.text = text;
     }
 
-    public void ResetButton()
+    private void OnEnable()
+    {
+        YesButton.onClick.AddListener(()=>ObjectPool.Release(PoolIndex.Confirm,gameObject));
+        NoButton.onClick.AddListener(()=>ObjectPool.Release(PoolIndex.Confirm,gameObject));
+    }
+
+    public void OnDisable()
     {
         yesButton.onClick.RemoveAllListeners();
         noButton.onClick.RemoveAllListeners();
