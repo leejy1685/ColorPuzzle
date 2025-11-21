@@ -11,28 +11,32 @@ public class ColorPuzzle : MonoBehaviour
     private Board _board;
     private LimitedChances _limitedChances;
     private ResetButton _resetButton;
-    private AlertPopUp _alertPopUp;
     private TargetColorText _targetColorText;
+    private PopUpList _popUpList;
+    private PopUpTexts _popUpTexts;
+    private Canvas _canvas;
     
     [SerializeField] private CellColor targetColor;
-    [SerializeField] private string titleText;
-    [SerializeField][TextArea(2,2)] private string clearText;
-    [SerializeField][TextArea(2,2)] private string failText;
-    
-    
+
+    private void Awake()
+    {
+        _popUpList = GetComponent<PopUpList>();
+        _popUpTexts = GetComponent<PopUpTexts>();
+    }
+
     private void Start()
     {
         _palette = FindObjectOfType<Palette>();
         _limitedChances = FindAnyObjectByType<LimitedChances>();
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
-        _alertPopUp = FindAnyObjectByType<AlertPopUp>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
+        _canvas = FindAnyObjectByType<Canvas>();
+
         
         RegisterSelectedColor();
         RegisterCell();
         RegisterResetButton();
-        RegisterPopUp();
         
         _palette.UpdatePaletteVisibility();
         _targetColorText.SetTargetColor(targetColor);
@@ -43,7 +47,6 @@ public class ColorPuzzle : MonoBehaviour
         ResetSelectedColor();
         ResetCell();
         ResetResetButton();
-        ResetPopUp();
     }
 
     private void RegisterSelectedColor()
@@ -155,20 +158,6 @@ public class ColorPuzzle : MonoBehaviour
     {
         _resetButton.OnReset = null;
     }
-    
-    private void RegisterPopUp()
-    {
-        _alertPopUp.OkButton.onClick.AddListener(() => _board.ResetBoard());
-        _alertPopUp.OkButton.onClick.AddListener(() => _limitedChances.ResetChances());
-        _alertPopUp.OkButton.onClick.AddListener(() => _alertPopUp.gameObject.SetActive(false));
-        
-        _alertPopUp.gameObject.SetActive(false);
-    }
-    
-    private void ResetPopUp()
-    {
-        _alertPopUp.OkButton.onClick.RemoveAllListeners();
-    }
 
     private void CheckClear()
     {
@@ -191,13 +180,26 @@ public class ColorPuzzle : MonoBehaviour
 
     private void ClearPopUp()
     {
-        _alertPopUp.gameObject.SetActive(true);
-        _alertPopUp.SetDescription(clearText);
+        GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
+        go.transform.SetParent(_canvas.transform);
+        go.transform.localPosition = Vector3.zero;
+        if (go.TryGetComponent(out AlertPopUp alertPopUp))
+        {
+            alertPopUp.gameObject.SetActive(true);
+            alertPopUp.SetDescription(_popUpTexts.CompleteText);
+        }
     }
     
     private void FailPopUp()
     {
-        _alertPopUp.gameObject.SetActive(true);
-        _alertPopUp.SetDescription(failText);
+        GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
+        go.transform.SetParent(_canvas.transform);
+        go.transform.localPosition = Vector3.zero;
+
+        if (go.TryGetComponent(out AlertPopUp alertPopUp))
+        {
+            alertPopUp.gameObject.SetActive(true);
+            alertPopUp.SetDescription(_popUpTexts.FailText);
+        }
     }
 }
