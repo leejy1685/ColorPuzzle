@@ -5,6 +5,8 @@ public enum PoolIndex
 {
     Alert,
     Confirm,
+    StageButton,
+    StageContainer,
 }
 
 public static class ObjectPool

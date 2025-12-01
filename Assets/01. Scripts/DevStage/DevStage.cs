@@ -18,6 +18,7 @@ public class DevStage : MonoBehaviour
     private CompleteButton _completeButton;
     private PopUpList _popUpList;
     private Canvas _canvas;
+    private ResetButton _resetButton;
 
     private void Awake()
     {
@@ -33,12 +34,14 @@ public class DevStage : MonoBehaviour
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         _completeButton = FindAnyObjectByType<CompleteButton>();
         _canvas = FindAnyObjectByType<Canvas>();
+        _resetButton = FindAnyObjectByType<ResetButton>();
         
         
         RegisterSetTargetColorButton();
         RegisterSelectedColor();
         RegisterCell();
         RegisterCompleteButton();
+        RegisterResetButton();
     }
 
     private void Update()
@@ -55,6 +58,7 @@ public class DevStage : MonoBehaviour
         ResetCell();
         ResetSetTargetColorButton();
         ResetCompleteButton();
+        ResetResetButton();
     }
 
     #region pallette
@@ -228,5 +232,18 @@ public class DevStage : MonoBehaviour
         _completeButton.Button.onClick.RemoveAllListeners();   
     }
 
+    #endregion
+
+    #region resetButton
+
+    private void RegisterResetButton()
+    {
+        _resetButton.OnReset += () => _board.ResetBoard();
+    }
+    private void ResetResetButton()
+    {
+        _resetButton.OnReset = null;
+    }
+    
     #endregion
 }
