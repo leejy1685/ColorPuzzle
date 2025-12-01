@@ -8,8 +8,7 @@ public class StageButton : MonoBehaviour
     private int _stageNum;
     private Button _button;
     private TextMeshProUGUI _text;
-
-
+    
     public int StageNum
     {
         get {return _stageNum;}

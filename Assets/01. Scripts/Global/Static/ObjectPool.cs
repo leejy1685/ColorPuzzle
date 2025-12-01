@@ -19,8 +19,11 @@ public static class ObjectPool
         if (_pool.TryGetValue(type, out Queue<GameObject> queue) && queue.Count > 0)
         {
             GameObject go = queue.Dequeue();
-            go.SetActive(true);
-            return go;
+            if (go != null)
+            {
+                go.SetActive(true);
+                return go;
+            }
         }
         
         //생성

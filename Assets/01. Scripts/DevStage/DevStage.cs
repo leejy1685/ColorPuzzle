@@ -43,6 +43,14 @@ public class DevStage : MonoBehaviour
         RegisterCompleteButton();
         RegisterResetButton();
     }
+    private void OnDestroy()
+    {
+        ResetSelectedColor();
+        ResetCell();
+        ResetSetTargetColorButton();
+        ResetCompleteButton();
+        ResetResetButton();
+    }
 
     private void Update()
     {
@@ -52,14 +60,6 @@ public class DevStage : MonoBehaviour
             _isHovered = false;
     }
 
-    private void OnDestroy()
-    {
-        ResetSelectedColor();
-        ResetCell();
-        ResetSetTargetColorButton();
-        ResetCompleteButton();
-        ResetResetButton();
-    }
 
     #region pallette
     

@@ -6,23 +6,26 @@ using UnityEngine.UI;
 
 public class LimitedChances : MonoBehaviour
 {
-    [SerializeField] private int firstChances;
-    
+    private int _firstChances;
     private TextMeshProUGUI _text;
     private int _chances;
 
-    public int Chances
-    {
-        get {return _chances;}
-        set {_chances = value;}
-    }
+    public int Chances => _chances;
+    
     
     private void Awake()
     {
         _text = GetComponent<TextMeshProUGUI>();
         
-        _chances = firstChances;
+        _chances = _firstChances;
         _text.text = _chances.ToString();
+    }
+
+    public void SetChances(int chances)
+    {
+        _chances = chances;
+        _text.text = _chances.ToString();
+        _firstChances = chances;
     }
     
     public void UsingChances()
@@ -33,7 +36,7 @@ public class LimitedChances : MonoBehaviour
     
     public void ResetChances()
     {
-        _chances = firstChances;
+        _chances = _firstChances;
         _text.text = _chances.ToString();
     }
     

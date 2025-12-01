@@ -15,8 +15,6 @@ public class ColorPuzzle : MonoBehaviour
     private PopUpList _popUpList;
     private PopUpTexts _popUpTexts;
     private Canvas _canvas;
-    
-    [SerializeField] private CellColor targetColor;
 
     private void Awake()
     {
@@ -53,10 +51,9 @@ public class ColorPuzzle : MonoBehaviour
         StageData stageData = StageSaveLoader.Stages[GameManager.Instance.StageNum];
         _board.SetStageBoard(stageData.board);
         _targetColorText.SetTargetColor(stageData.targetColor);
-        _limitedChances.Chances = stageData.chances;
+        _limitedChances.SetChances(stageData.chances);
         
         _palette.UpdatePaletteVisibility();
-        _targetColorText.SetTargetColor(targetColor);
     }
 
     private void RegisterSelectedColor()
@@ -176,7 +173,7 @@ public class ColorPuzzle : MonoBehaviour
         {
             for(int j=0;j<Board.Cols;j++)
             {
-                if(_board.Cells[i,j].Color != targetColor)
+                if(_board.Cells[i,j].Color != _targetColorText.Color)
                     clear = false;
             }
         }
@@ -212,6 +209,7 @@ public class ColorPuzzle : MonoBehaviour
             alertPopUp.gameObject.SetActive(true);
             alertPopUp.SetDescription(_popUpTexts.FailText);
             alertPopUp.OkButton.onClick.AddListener(_board.ResetBoard);
+            alertPopUp.OkButton.onClick.AddListener(_limitedChances.ResetChances);
         }
     }
 }
