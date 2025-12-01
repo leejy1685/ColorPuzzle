@@ -38,8 +38,7 @@ public class ColorPuzzle : MonoBehaviour
         RegisterCell();
         RegisterResetButton();
         
-        _palette.UpdatePaletteVisibility();
-        _targetColorText.SetTargetColor(targetColor);
+        GameStart();
     }
 
     private void OnDestroy()
@@ -47,6 +46,17 @@ public class ColorPuzzle : MonoBehaviour
         ResetSelectedColor();
         ResetCell();
         ResetResetButton();
+    }
+
+    private void GameStart()
+    {
+        StageData stageData = StageSaveLoader.Stages[GameManager.Instance.StageNum];
+        _board.SetStageBoard(stageData.board);
+        _targetColorText.SetTargetColor(stageData.targetColor);
+        _limitedChances.Chances = stageData.chances;
+        
+        _palette.UpdatePaletteVisibility();
+        _targetColorText.SetTargetColor(targetColor);
     }
 
     private void RegisterSelectedColor()
@@ -131,7 +141,6 @@ public class ColorPuzzle : MonoBehaviour
                 int y = j;
                 _board.Cells[i,j].OnCellClicked += () => CountingChances(_board.Cells[x,y].Color);
                 _board.Cells[i,j].OnCellClicked += () => FloodFill(x,y,_selectedColor);;
-                //_board.Cells[i,j].OnCellClicked += () => TrySolve(x,y,_board.Cells[x,y].Color);
                 _board.Cells[i,j].OnCellClicked += () => CheckClear();
             }
         }
@@ -183,10 +192,12 @@ public class ColorPuzzle : MonoBehaviour
         GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
         go.transform.SetParent(_canvas.transform);
         go.transform.localPosition = Vector3.zero;
+        
         if (go.TryGetComponent(out AlertPopUp alertPopUp))
         {
             alertPopUp.gameObject.SetActive(true);
             alertPopUp.SetDescription(_popUpTexts.CompleteText);
+            alertPopUp.OkButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
         }
     }
     
@@ -200,6 +211,7 @@ public class ColorPuzzle : MonoBehaviour
         {
             alertPopUp.gameObject.SetActive(true);
             alertPopUp.SetDescription(_popUpTexts.FailText);
+            alertPopUp.OkButton.onClick.AddListener(_board.ResetBoard);
         }
     }
 }

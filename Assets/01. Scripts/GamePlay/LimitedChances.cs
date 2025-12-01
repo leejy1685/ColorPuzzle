@@ -10,8 +10,12 @@ public class LimitedChances : MonoBehaviour
     
     private TextMeshProUGUI _text;
     private int _chances;
-    
-    public int Chances => _chances;
+
+    public int Chances
+    {
+        get {return _chances;}
+        set {_chances = value;}
+    }
     
     private void Awake()
     {

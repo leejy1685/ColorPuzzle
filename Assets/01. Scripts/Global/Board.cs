@@ -63,5 +63,18 @@ public class Board : MonoBehaviour
         }
     }
     
+    public void SetStageBoard(CellColor[,] cells)
+    {
+        for (int i = 0; i < Rows; i++)
+        {
+            for (int j = 0; j < Cols; j++)
+            {
+                _cells[i,j].ChangeColor(cells[i,j]);
+            }
+        }
+
+        _firstCells = cells;
+    }
+    
     
 }
