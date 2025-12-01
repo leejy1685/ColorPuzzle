@@ -16,12 +16,12 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    private StageData _stageData;
+    private int _stageNum;
 
-    public StageData StageData
+    public int StageNum
     {
-        get {return _stageData;}
-        set {_stageData = value;}
+        get {return _stageNum;}
+        set {_stageNum = value;}
     }
 
     private void Awake()

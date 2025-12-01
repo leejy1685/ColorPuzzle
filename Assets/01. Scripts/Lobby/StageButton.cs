@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class StageButton : MonoBehaviour
 {
-    private StageData _stageData;
+    private int _stageNum;
     private Button _button;
     private TextMeshProUGUI _text;
 
 
-    public StageData StageData
+    public int StageNum
     {
-        get {return _stageData;}
-        set {_stageData = value;}
+        get {return _stageNum;}
+        set {_stageNum = value;}
     }
     
     private void Awake()
@@ -34,7 +34,7 @@ public class StageButton : MonoBehaviour
 
     private void LoadStage()
     {
-        GameManager.Instance.StageData = _stageData;
+        GameManager.Instance.StageNum = _stageNum;
         SceneMng.ChangeScene(SceneName.MainScene);
     }
 

@@ -16,7 +16,7 @@ public class StageContainer : MonoBehaviour
 
             if (go.TryGetComponent(out StageButton stageBtn))
             {
-                stageBtn.StageData = StageSaveLoader.Stages[i];
+                stageBtn.StageNum = i;
                 stageBtn.SetStageName($"Stage {i + 1}");
             }
         }
