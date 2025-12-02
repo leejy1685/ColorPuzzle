@@ -31,6 +31,11 @@ public class StageButton : MonoBehaviour
         _button.onClick.RemoveAllListeners();
     }
 
+    private void OnDestroy()
+    {
+        UIPrefabManager.Instance.CloseUI(gameObject);
+    }
+
     private void LoadStage()
     {
         GameManager.Instance.StageNum = _stageNum;
@@ -41,6 +46,8 @@ public class StageButton : MonoBehaviour
     {
         _text.text = name;
     }
+    
+    
     
     
 }

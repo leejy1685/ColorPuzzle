@@ -24,8 +24,8 @@ public class ConfirmPopUp : MonoBehaviour
 
     private void OnEnable()
     {
-        YesButton.onClick.AddListener(()=>ObjectPool.Release(PoolIndex.Confirm,gameObject));
-        NoButton.onClick.AddListener(()=>ObjectPool.Release(PoolIndex.Confirm,gameObject));
+        YesButton.onClick.AddListener(()=>UIPrefabManager.Instance.CloseUI(gameObject));
+        NoButton.onClick.AddListener(()=>UIPrefabManager.Instance.CloseUI(gameObject));
     }
 
     public void OnDisable()

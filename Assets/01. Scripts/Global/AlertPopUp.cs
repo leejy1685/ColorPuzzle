@@ -24,7 +24,7 @@ public class AlertPopUp : MonoBehaviour
 
     private void OnEnable()
     {
-        OkButton.onClick.AddListener(()=> ObjectPool.Release(PoolIndex.Alert,gameObject));
+        OkButton.onClick.AddListener(()=> UIPrefabManager.Instance.CloseUI(gameObject));
     }
 
     public void OnDisable()

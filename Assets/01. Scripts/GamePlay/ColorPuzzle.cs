@@ -184,11 +184,9 @@ public class ColorPuzzle : MonoBehaviour
             FailPopUp();
     }
 
-    private void ClearPopUp()
+    private async void ClearPopUp()
     {
-        GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
-        go.transform.SetParent(_canvas.transform);
-        go.transform.localPosition = Vector3.zero;
+        GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.Alert);
         
         if (go.TryGetComponent(out AlertPopUp alertPopUp))
         {
@@ -198,11 +196,9 @@ public class ColorPuzzle : MonoBehaviour
         }
     }
     
-    private void FailPopUp()
+    private async void FailPopUp()
     {
-        GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
-        go.transform.SetParent(_canvas.transform);
-        go.transform.localPosition = Vector3.zero;
+        GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.Alert);
 
         if (go.TryGetComponent(out AlertPopUp alertPopUp))
         {

@@ -7,10 +7,9 @@ public class MainUI : MonoBehaviour
     [SerializeField] private Button gamePlay;
     [SerializeField] private Button stageDev;
     [SerializeField] private Button quitButton;
-    [SerializeField] private GameObject stageContainerPrefab;
 
     private Canvas _canvas;
-    private StageContainer stageContainer;
+    private StageContainer _stageContainer;
 
     private void Awake()
     {
@@ -20,20 +19,15 @@ public class MainUI : MonoBehaviour
         
     }   
 
-    private void Start()
+    private async void Start()
     {
-        _canvas = FindObjectOfType<Canvas>();
-        
-        GameObject go = ObjectPool.Get(PoolIndex.StageContainer, stageContainerPrefab);
-        go.transform.SetParent(_canvas.transform);
-        go.transform.localPosition = Vector3.zero;
-        
-        go.TryGetComponent(out stageContainer);
+        GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.StageContainer);
+        go.TryGetComponent(out _stageContainer);
     }
 
     private void GamePlay()
     {
-        stageContainer.gameObject.SetActive(true);
+        _stageContainer.gameObject.SetActive(true);
     }
 
     private void StageDev()

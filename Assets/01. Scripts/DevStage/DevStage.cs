@@ -135,21 +135,15 @@ public class DevStage : MonoBehaviour
         _setTargetColorButton.Button.onClick.AddListener(() => SetTargetColorAlert());
     }
 
-    private void SetTargetColorAlert()
+    private async void SetTargetColorAlert()
     {
         // 1. 오브젝트 생성
-        GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
+        GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.Alert);
         
-        // 2. 생성한 오브젝트는 UI이기 때문에 캔버스의 자식으로 설정
-        go.transform.SetParent(_canvas.transform);
-        
-        // 3. 위치 초기화
-        go.transform.localPosition = Vector3.zero;
-        
-        // 4. 생성된 오브젝트에서 원하는 컴포넌트를 가져오기
+        // 2. 생성된 오브젝트에서 원하는 컴포넌트를 가져오기
         if (go.TryGetComponent(out AlertPopUp alertPopUp))
         {
-            // 5. 알림창 문구 수정
+            // 3. 알림창 문구 수정
             alertPopUp.SetDescription(_popUpTexts.TargetColorText);
         }
     }
@@ -193,16 +187,15 @@ public class DevStage : MonoBehaviour
         _completeButton.Button.onClick.AddListener(Complete);
     }
 
-    private void Complete()
+    private async void Complete()
     {
         var solver = new BFSSolver();
  
         if (solver.TrySolve(_board.CurrentCells, _targetColorText.Color, out int minimumMoves) && 
             _targetColorText.Color != CellColor.None)
         {
-            GameObject go = ObjectPool.Get(PoolIndex.Confirm, _popUpList.ConfirmPopUp);
-            go.transform.SetParent(_canvas.transform);
-            go.transform.localPosition = Vector3.zero;
+            GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.Confirm);
+            
             if (go.TryGetComponent(out ConfirmPopUp _confirmPopUp))
             {
                 string text = String.Format(_popUpTexts.CompleteText, minimumMoves);
@@ -217,13 +210,13 @@ public class DevStage : MonoBehaviour
         //계산 실패 시 알람
         else
         {
-            GameObject go = ObjectPool.Get(PoolIndex.Alert, _popUpList.AlertPopUp);
-            go.transform.SetParent(_canvas.transform);
-            go.transform.localPosition = Vector3.zero;
+            GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.Alert);
+            
             if (go.TryGetComponent(out AlertPopUp alertPopUp))
             {
                 alertPopUp.SetDescription(_popUpTexts.FailText);
             }
+
         }
     }
 

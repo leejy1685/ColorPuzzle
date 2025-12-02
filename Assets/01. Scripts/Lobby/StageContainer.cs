@@ -7,11 +7,11 @@ public class StageContainer : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private GameObject stageButton;
     
-    private void Awake()
+    private async void Awake()
     {
         for (int i = 0; i < StageSaveLoader.Stages.Count; i++)
         {
-            GameObject go = ObjectPool.Get(PoolIndex.StageButton, stageButton);
+            GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.StageButton);
             go.transform.SetParent(content.transform);
 
             if (go.TryGetComponent(out StageButton stageBtn))
@@ -20,6 +20,11 @@ public class StageContainer : MonoBehaviour
                 stageBtn.SetStageName($"Stage {i + 1}");
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        UIPrefabManager.Instance.CloseUI(gameObject);
     }
 
 }
