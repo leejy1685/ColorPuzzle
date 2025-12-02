@@ -12,13 +12,10 @@ public class ColorPuzzle : MonoBehaviour
     private LimitedChances _limitedChances;
     private ResetButton _resetButton;
     private TargetColorText _targetColorText;
-    private PopUpList _popUpList;
     private PopUpTexts _popUpTexts;
-    private Canvas _canvas;
 
     private void Awake()
     {
-        _popUpList = GetComponent<PopUpList>();
         _popUpTexts = GetComponent<PopUpTexts>();
     }
 
@@ -29,8 +26,6 @@ public class ColorPuzzle : MonoBehaviour
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
-        _canvas = FindAnyObjectByType<Canvas>();
-
         
         RegisterSelectedColor();
         RegisterCell();

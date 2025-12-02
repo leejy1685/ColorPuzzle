@@ -16,14 +16,11 @@ public class DevStage : MonoBehaviour
     private Dictionary<CellColor,Action> _targetColorActions;   //기능 삭제를 위해 추가
     private PopUpTexts _popUpTexts;
     private CompleteButton _completeButton;
-    private PopUpList _popUpList;
-    private Canvas _canvas;
     private ResetButton _resetButton;
 
     private void Awake()
     {
         _popUpTexts = GetComponent<PopUpTexts>();
-        _popUpList = GetComponent<PopUpList>();
     }
 
     private void Start()
@@ -33,7 +30,6 @@ public class DevStage : MonoBehaviour
         _setTargetColorButton = FindAnyObjectByType<SetTargetColorButton>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         _completeButton = FindAnyObjectByType<CompleteButton>();
-        _canvas = FindAnyObjectByType<Canvas>();
         _resetButton = FindAnyObjectByType<ResetButton>();
         
         
