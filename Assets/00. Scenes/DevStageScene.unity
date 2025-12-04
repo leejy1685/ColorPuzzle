@@ -5306,7 +5306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8153eac03e5159468e7386f5791a496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstChances: 0
 --- !u!1 &1179820820
 GameObject:
   m_ObjectHideFlags: 0
@@ -7576,7 +7575,6 @@ GameObject:
   - component: {fileID: 1586002886}
   - component: {fileID: 1586002885}
   - component: {fileID: 1586002887}
-  - component: {fileID: 1586002888}
   m_Layer: 0
   m_Name: DevStageManager
   m_TagString: Untagged
@@ -7626,20 +7624,6 @@ MonoBehaviour:
   targetColorText: Select a color from the palette =>
   completeText: Limited Chance is {0}. Will you complete it?
   failText: The current board cannot be completed.
---- !u!114 &1586002888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1586002884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8479e647f839f4b80c509e9267236d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alertPopUp: {fileID: 1753706954851648328, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
-  confirmPopUp: {fileID: 4283854516747101341, guid: 893c037cc63c254488bf738a3c487b05, type: 3}
 --- !u!1 &1586467037
 GameObject:
   m_ObjectHideFlags: 0

@@ -1758,7 +1758,6 @@ GameObject:
   m_Component:
   - component: {fileID: 393639637}
   - component: {fileID: 393639636}
-  - component: {fileID: 393639639}
   - component: {fileID: 393639638}
   m_Layer: 0
   m_Name: ColorPuzzleManager
@@ -1779,7 +1778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0561ba9976e7e24080d49b107d05da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetColor: 3
 --- !u!4 &393639637
 Transform:
   m_ObjectHideFlags: 0
@@ -1810,20 +1808,6 @@ MonoBehaviour:
   targetColorText: 
   completeText: Puzzle Clear!!
   failText: Puzzle Fail...
---- !u!114 &393639639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 393639635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8479e647f839f4b80c509e9267236d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alertPopUp: {fileID: 1753706954851648328, guid: 48f63dd3ffe312a438a2f969c7c8e9b9, type: 3}
-  confirmPopUp: {fileID: 4283854516747101341, guid: 893c037cc63c254488bf738a3c487b05, type: 3}
 --- !u!1 &396840105
 GameObject:
   m_ObjectHideFlags: 0
@@ -5210,7 +5194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8153eac03e5159468e7386f5791a496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstChances: 2
 --- !u!1 &1179820820
 GameObject:
   m_ObjectHideFlags: 0
