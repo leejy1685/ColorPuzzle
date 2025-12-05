@@ -10,7 +10,6 @@ public class Board : MonoBehaviour
     
     public Cell[,] Cells => _cells;
     public CellColor[,] FirstCells => _firstCells;
-
     public CellColor[,] CurrentCells
     {
         get
@@ -28,7 +27,6 @@ public class Board : MonoBehaviour
     }
 
     
-    //임시 코드
     private void Awake()
     {
         Convert1DTo2D();
@@ -50,7 +48,6 @@ public class Board : MonoBehaviour
             }
         }
     }
-    //여기까지
 
     public void ResetBoard()
     {
@@ -74,6 +71,18 @@ public class Board : MonoBehaviour
         }
 
         _firstCells = cells;
+    }
+
+    public bool HasTargetColor(CellColor color)
+    {
+        for (int i = 0; i < Rows; i++)
+        {
+            for (int j = 0; j < Cols; j++)
+            {
+                if (_cells[i,j].Color == color) return true;
+            }
+        }
+        return false;
     }
     
     

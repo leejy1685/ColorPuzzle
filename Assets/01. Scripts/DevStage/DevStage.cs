@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class DevStage : MonoBehaviour
 {
@@ -17,6 +15,7 @@ public class DevStage : MonoBehaviour
     private PopUpTexts _popUpTexts;
     private CompleteButton _completeButton;
     private ResetButton _resetButton;
+    private BackButton _backButton;
 
     private void Awake()
     {
@@ -31,6 +30,7 @@ public class DevStage : MonoBehaviour
         _targetColorText = FindAnyObjectByType<TargetColorText>();
         _completeButton = FindAnyObjectByType<CompleteButton>();
         _resetButton = FindAnyObjectByType<ResetButton>();
+        _backButton = FindAnyObjectByType<BackButton>();
         
         
         RegisterSetTargetColorButton();
@@ -38,6 +38,7 @@ public class DevStage : MonoBehaviour
         RegisterCell();
         RegisterCompleteButton();
         RegisterResetButton();
+        RegisterBackButton();
     }
     private void OnDestroy()
     {
@@ -46,6 +47,7 @@ public class DevStage : MonoBehaviour
         ResetSetTargetColorButton();
         ResetCompleteButton();
         ResetResetButton();
+        ResetBackButton();
     }
 
     private void Update()
@@ -187,20 +189,21 @@ public class DevStage : MonoBehaviour
     {
         var solver = new BFSSolver();
  
-        if (solver.TrySolve(_board.CurrentCells, _targetColorText.Color, out int minimumMoves) && 
-            _targetColorText.Color != CellColor.None)
+        if (solver.TrySolve(_board.CurrentCells, _targetColorText.Color, out int minimumMoves) && //최저횟수 계산 성공
+            _targetColorText.Color != CellColor.None && //타겟 컬러가 설정 되어 있을 것
+            !_board.HasTargetColor(CellColor.None)) //보드에 None컬러가 없을 것
         {
             GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.Confirm);
             
-            if (go.TryGetComponent(out ConfirmPopUp _confirmPopUp))
+            if (go.TryGetComponent(out ConfirmPopUp confirmPopUp))
             {
                 string text = String.Format(_popUpTexts.CompleteText, minimumMoves);
-                _confirmPopUp.SetDescription(text);
+                confirmPopUp.SetDescription(text);
                 
                 //팝업 창 버튼에 기능 추가
-                _confirmPopUp.YesButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
+                confirmPopUp.YesButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
                 StageData saveData = new StageData(minimumMoves, _targetColorText.Color, _board.CurrentCells);
-                _confirmPopUp.YesButton.onClick.AddListener(() => StageSaveLoader.SaveStage(saveData));
+                confirmPopUp.YesButton.onClick.AddListener(() => StageSaveLoader.SaveStage(saveData));
             }
         }   
         //계산 실패 시 알람
@@ -234,5 +237,19 @@ public class DevStage : MonoBehaviour
         _resetButton.OnReset = null;
     }
     
+    #endregion
+
+    #region BackButton
+
+    private void RegisterBackButton()
+    {
+        _backButton.Button.onClick.AddListener(()=>SceneMng.ChangeScene(SceneName.LobbyScene));
+    }
+
+    private void ResetBackButton()
+    {
+        _backButton.Button.onClick.RemoveAllListeners();
+    }
+
     #endregion
 }

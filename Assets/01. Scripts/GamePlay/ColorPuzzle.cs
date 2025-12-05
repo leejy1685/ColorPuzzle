@@ -13,6 +13,7 @@ public class ColorPuzzle : MonoBehaviour
     private ResetButton _resetButton;
     private TargetColorText _targetColorText;
     private PopUpTexts _popUpTexts;
+    private BackButton _backButton;
 
     private void Awake()
     {
@@ -26,10 +27,12 @@ public class ColorPuzzle : MonoBehaviour
         _resetButton = FindAnyObjectByType<ResetButton>();
         _board = FindAnyObjectByType<Board>();
         _targetColorText = FindAnyObjectByType<TargetColorText>();
+        _backButton = FindAnyObjectByType<BackButton>();
         
         RegisterSelectedColor();
         RegisterCell();
         RegisterResetButton();
+        RegisterBackButton();
         
         GameStart();
     }
@@ -39,6 +42,7 @@ public class ColorPuzzle : MonoBehaviour
         ResetSelectedColor();
         ResetCell();
         ResetResetButton();
+        ResetBackButton();       
     }
 
     private void GameStart()
@@ -202,5 +206,15 @@ public class ColorPuzzle : MonoBehaviour
             alertPopUp.OkButton.onClick.AddListener(_board.ResetBoard);
             alertPopUp.OkButton.onClick.AddListener(_limitedChances.ResetChances);
         }
+    }
+    
+    private void RegisterBackButton()
+    {
+        _backButton.Button.onClick.AddListener(()=>SceneMng.ChangeScene(SceneName.LobbyScene));
+    }
+    
+    private void ResetBackButton()
+    {
+        _backButton.Button.onClick.RemoveAllListeners();
     }
 }

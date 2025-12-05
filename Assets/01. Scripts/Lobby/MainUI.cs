@@ -19,15 +19,10 @@ public class MainUI : MonoBehaviour
         
     }   
 
-    private async void Start()
+    private async void GamePlay()
     {
         GameObject go = await UIPrefabManager.Instance.ShowUI(UIPrefabs.StageContainer);
         go.TryGetComponent(out _stageContainer);
-    }
-
-    private void GamePlay()
-    {
-        _stageContainer.gameObject.SetActive(true);
     }
 
     private void StageDev()

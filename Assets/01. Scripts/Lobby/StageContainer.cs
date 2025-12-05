@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,20 @@ public class StageContainer : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private GameObject stageButton;
     
-    private async void Awake()
+    private BackButton _backButton;
+    
+    private void Awake()
+    {
+        _backButton = GetComponentInChildren<BackButton>();
+    }
+
+    private void Start()
+    {
+        SetStageButton();
+        SetBackButton();
+    }
+
+    private async void SetStageButton()
     {
         for (int i = 0; i < StageSaveLoader.Stages.Count; i++)
         {
@@ -21,10 +35,10 @@ public class StageContainer : MonoBehaviour
             }
         }
     }
-
-    private void OnDestroy()
+    
+    private void SetBackButton()
     {
-        UIPrefabManager.Instance.CloseUI(gameObject);
+        _backButton.Button.onClick.AddListener(()=>UIPrefabManager.Instance.CloseUI(gameObject));
     }
 
 }
