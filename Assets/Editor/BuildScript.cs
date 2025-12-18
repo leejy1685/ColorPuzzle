@@ -30,7 +30,7 @@ namespace Editor
             // 3. 빌드 타겟을 Windows 64비트로 지정
             options.target = BuildTarget.StandaloneWindows64;
 
-            //options.targetGroup = BuildTargetGroup.Standalone;
+            options.targetGroup = BuildTargetGroup.Standalone;
 
             options.options = BuildOptions.None; // 기본 옵션
 
