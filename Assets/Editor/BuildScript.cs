@@ -11,6 +11,8 @@ public class BuildScript
     {
         BuildPlayerOptions options = new BuildPlayerOptions();
         
+        
+		// 1. 빌드한 씬 목록 지정
         List<string> scenes = new List<string>();
         foreach (SceneName sceneName in Enum.GetValues(typeof(SceneName)))
         {
@@ -18,7 +20,6 @@ public class BuildScript
             scenes.Add(scenePath);
         }
         
-        // 1. 빌드할 씬 목록 지정 (실제 씬 이름으로 변경)
         options.scenes = scenes.ToArray();
         
         // 2. 결과물 경로 및 이름 지정 (확장자는 .exe를 붙이지 않습니다)
@@ -32,3 +33,15 @@ public class BuildScript
         BuildPipeline.BuildPlayer(options);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
