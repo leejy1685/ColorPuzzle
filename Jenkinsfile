@@ -38,7 +38,7 @@ pipeline {
                 // 직접 찾으신 스니펫에 overwrite: true를 추가하여 gh release delete와 동일한 효과를 냅니다.
                 createGitHubRelease(
                     credentialId: 'github-token',
-                    githubServer: 'https://github.com',
+                    githubServer: 'https://api.github.com',
                     repository: 'leejy1685/ColorPuzzle',
                     tag: 'latest',
                     name: "Build #${env.BUILD_NUMBER}",
@@ -46,6 +46,7 @@ pipeline {
                     commitish: 'main',
                     draft: false,
                     prerelease: false,
+                    
                 )
             }
         }
