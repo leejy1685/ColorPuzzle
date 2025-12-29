@@ -46,7 +46,6 @@ pipeline {
                     commitish: 'main',
                     draft: false,
                     prerelease: false,
-                    overwrite: true // 기존 'latest' 태그와 릴리스가 있을 경우 덮어씁니다.
                 )
             }
         }
