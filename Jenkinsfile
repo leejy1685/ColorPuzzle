@@ -8,8 +8,8 @@ pipeline {
     }
 
     environment {
-        // 젠킨스 도구 설정에 등록된 유니티 경로를 자동으로 가져옵니다.
-        UNITY_HOME = tool name: 'Unity_3.17f1', type: 'com.horstmann.jenkins.plugins.unity3d.Unity3dInstallation'
+        // 이미지 525323번에 적힌 설치 경로를 그대로 입력합니다.
+        UNITY_EXE = 'C:\\Program Files\\Unity 2022.3.17f1\\Editor\\Unity.exe'
         GH_TOKEN = credentials('github-token')
     }
 
@@ -23,9 +23,9 @@ pipeline {
 
         stage('Unity Build') {
             steps {
-                // 플러그인 클래스 대신 툴 경로를 이용해 직접 실행합니다.
+                // 플러그인 도구 이름(Unity_3.17f1) 대신 실제 실행 파일 경로를 사용하여 호출합니다.
                 bat """
-                    "${env.UNITY_HOME}\\Editor\\Unity.exe" -quit -batchmode -nographics -projectPath . -executeMethod Editor.BuildScript.BuildWindows -logFile -
+                    "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . -executeMethod Editor.BuildScript.BuildWindows -logFile -
                 """
             }
         }
