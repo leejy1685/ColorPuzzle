@@ -7,6 +7,12 @@ pipeline {
         timestamps() 
     }
 
+    environment {
+        // 젠킨스 도구 설정에 등록된 유니티 경로를 자동으로 가져옵니다.
+        UNITY_HOME = tool name: 'Unity_3.17f1', type: 'com.horstmann.jenkins.plugins.unity3d.Unity3dInstallation'
+        GH_TOKEN = credentials('github-token')
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -15,26 +21,21 @@ pipeline {
             }
         }
 
-        stage('Unity Windows Build') {
+        stage('Unity Build') {
             steps {
-                // 플러그인 공식 가이드에 따른 파이프라인 호출 방식입니다
-                step([
-                    $class: 'Unity3dBuilder',
-                    unity3dName: 'Unity_3.17f1', // 젠킨스 전역 도구 설정에 등록하신 이름
-                    argLine: '-quit -batchmode -nographics -projectPath . -executeMethod Editor.BuildScript.BuildWindows -logFile -'
-                ])
+                // 플러그인 클래스 대신 툴 경로를 이용해 직접 실행합니다.
+                bat """
+                    "${env.UNITY_HOME}\\Editor\\Unity.exe" -quit -batchmode -nographics -projectPath . -executeMethod Editor.BuildScript.BuildWindows -logFile -
+                """
             }
         }
 
-        stage('GitHub Release Plugin') {
+        stage('GitHub Release') {
             steps {
                 bat 'powershell "Compress-Archive -Path Builds\\MyGame\\* -DestinationPath ColorPuzzle.zip -Force"'
-
-                // 플러그인 호출 시에도 인증 정보를 명시하는 것이 좋습니다.
+                
                 githubRelease(
-                    // 만약 플러그인이 자동으로 environment의 GH_TOKEN을 못 읽는다면
-                    // 아래와 같이 ID를 직접 지정해 보세요.
-                    credentialsId: 'github-token', 
+                    credentialsId: 'github-token',
                     tagName: 'latest',
                     releaseName: "Latest Build (#${env.BUILD_NUMBER})",
                     artifacts: 'ColorPuzzle.zip',
