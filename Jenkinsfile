@@ -34,8 +34,6 @@ pipeline {
             steps {
                 // 업로드할 파일을 먼저 압축합니다.
                 bat 'powershell "Compress-Archive -Path Builds\\MyGame\\* -DestinationPath ColorPuzzle.zip -Force"'
-
-                archiveArtifacts artifacts: 'ColorPuzzle.zip', followSymlinks: false
         
                 // 3. 플러그인에 삭제 기능이 없으므로 gh 명령어로 기존 'latest'를 먼저 지워줍니다.
                 withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
@@ -53,6 +51,11 @@ pipeline {
                     draft: false,
                     prerelease: false,
                 )
+
+                // 4. 플러그인이 못하는 파일 업로드를 gh 명령어로 마무리
+                withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
+                    bat 'gh release upload latest ColorPuzzle.zip --clobber'
+                }
             }
         }
     }
