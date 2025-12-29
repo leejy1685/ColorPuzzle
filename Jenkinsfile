@@ -35,7 +35,6 @@ pipeline {
                 // 업로드할 파일을 먼저 압축합니다.
                 bat 'powershell "Compress-Archive -Path Builds\\MyGame\\* -DestinationPath ColorPuzzle.zip -Force"'
                 
-                // 직접 찾으신 스니펫에 overwrite: true를 추가하여 gh release delete와 동일한 효과를 냅니다.
                 createGitHubRelease(
                     credentialId: 'github-token',
                     githubServer: 'https://api.github.com',
@@ -44,9 +43,11 @@ pipeline {
                     name: "Build #${env.BUILD_NUMBER}",
                     bodyText: '자동 빌드 배포',
                     commitish: 'main',
+                    overwrite: true,
                     draft: false,
                     prerelease: false,
-                    
+                    artifactFolder: '.',
+                    artifactScreenshots: 'ColorPuzzle.zip'
                 )
             }
         }
