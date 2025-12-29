@@ -32,16 +32,22 @@ pipeline {
 
         stage('GitHub Release') {
             steps {
-                // 빌드 결과물 압축
+                // 업로드할 파일을 먼저 압축합니다.
                 bat 'powershell "Compress-Archive -Path Builds\\MyGame\\* -DestinationPath ColorPuzzle.zip -Force"'
-        
-                // Credentials ID 'github-token'을 사용하여 gh cli로 직접 배포
-                withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
-                    bat """
-                        gh release delete latest -y --cleanup-tag || echo "No existing release"
-                        gh release create latest ColorPuzzle.zip --title "Build #${env.BUILD_NUMBER}" --notes "Automated build"
-                    """
-                }
+                
+                // 직접 찾으신 스니펫에 overwrite: true를 추가하여 gh release delete와 동일한 효과를 냅니다.
+                createGitHubRelease(
+                    credentialId: 'github-token',
+                    githubServer: 'https://github.com',
+                    repository: 'leejy1685/ColorPuzzle',
+                    tag: 'latest',
+                    name: "Build #${env.BUILD_NUMBER}",
+                    bodyText: '자동 빌드 배포',
+                    commitish: 'main',
+                    draft: false,
+                    prerelease: false,
+                    overwrite: true // 기존 'latest' 태그와 릴리스가 있을 경우 덮어씁니다.
+                )
             }
         }
     }
