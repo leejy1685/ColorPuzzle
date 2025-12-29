@@ -32,14 +32,16 @@ pipeline {
 
         stage('GitHub Release') {
             steps {
+                // 압축 파일 생성
                 bat 'powershell "Compress-Archive -Path Builds\\MyGame\\* -DestinationPath ColorPuzzle.zip -Force"'
-                
+        
+                // 공식 문서 규격에 맞춘 githubRelease 호출
                 githubRelease(
-                    credentialsId: 'github-token',
+                    id: 'github-token',      // image_50986c에 등록된 Credentials ID
                     tagName: 'latest',
-                    releaseName: "Latest Build (#${env.BUILD_NUMBER})",
-                    artifacts: 'ColorPuzzle.zip',
-                    overwrite: true
+                    releaseName: "Build #${env.BUILD_NUMBER}",
+                    artifactFolder: '.',     // 현재 워크스페이스 기준
+                    artifactScreenshots: 'ColorPuzzle.zip' // 업로드할 파일명
                 )
             }
         }
