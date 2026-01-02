@@ -53,13 +53,13 @@ pipeline {
 
                     // 5. GitHub CLI를 사용한 릴리스 생성 및 파일 업로드
                     // --generate-notes: 커밋 내역 자동 생성
-                    // --overwrite (또는 --clobber): 기존 릴리스 덮어쓰기
+                    // --clobber 기존 릴리스 덮어쓰기
                     withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
                         bat """
                             gh release create latest ColorPuzzle.zip \
                             --title "Build #${env.BUILD_NUMBER} (${env.BUILD_DATE})" \
                             --generate-notes \
-                            --overwrite
+                            --clobber
                         """
                     }
                 }
