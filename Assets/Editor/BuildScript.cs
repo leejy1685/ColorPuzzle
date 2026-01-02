@@ -1,41 +1,130 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
+using UnityEngine;
+
+public enum AssetPackageType
+{
+    FullPack,      // 모든 씬을 포함하는 전체 빌드
+    BundlesPack,   // 코드 로직에 따라 2번 인덱스까지만 포함하는 빌드
+}
+
 
 namespace Editor
 {
+    
     public class BuildScript
     {
-        static string ScenePath = "Assets/00. Scenes/";
-
-        // Jenkins가 호출할 Windows 64비트 빌드 함수
-        public static void BuildWindows()
+        static string TARGET_DIR;
+        static string COMPLETE_DIR;
+        static string[] SCENES = FindEnabledEditorScenes();
+        
+        public static void StartBuildProcess()
         {
-            BuildPlayerOptions options = new BuildPlayerOptions();
+            SetTargetDirectory();
+            PerformWindowsBuild();
+        }
 
+        static void SetTargetDirectory()
+        {
+            TARGET_DIR = Directory.GetCurrentDirectory() + "/outputs";
+            COMPLETE_DIR = GetDirectoryName();
+        }
 
-            // 1. 빌드한 씬 목록 지정
-            List<string> scenes = new List<string>();
-            foreach (SceneName sceneName in Enum.GetValues(typeof(SceneName)))
+		static void PerformWindowsBuild()
+        {
+            var BuildName = PlayerSettings.productName;
+            var targetDirectory = COMPLETE_DIR + "/" + BuildName + ".exe";
+
+            GenericBuild(SCENES, targetDirectory, BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, BuildOptions.None);
+        }
+        
+        private static string[] FindEnabledEditorScenes()
+        {
+            List<string> EditorScenes = new List<string>();
+            EditorBuildSettingsScene[] ebssArray = new EditorBuildSettingsScene[EditorBuildSettings.scenes.Length];
+            var AssetPackage = (AssetPackageType)Enum.Parse(typeof(AssetPackageType), GetArg("AssetPackage"));
+            var sceneOrder = AssetPackage == AssetPackageType.BundlesPack ? 2 : EditorBuildSettings.scenes.Length - 1;
+
+            for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
             {
-                string scenePath = $"{ScenePath}{sceneName}.unity";
-                scenes.Add(scenePath);
+                EditorBuildSettingsScene curScene = EditorBuildSettings.scenes[i];
+                bool enableScene = i <= sceneOrder;
+                curScene.enabled = enableScene;
+                ebssArray[i] = curScene;
+
+                if (enableScene)
+                {
+                    EditorScenes.Add(curScene.path);
+                }
+            }
+            EditorBuildSettings.scenes = ebssArray;
+            return EditorScenes.ToArray();
+        }
+        
+        static void GenericBuild(string[] scenes, string target_dir, BuildTargetGroup build_group, BuildTarget build_target, BuildOptions build_options)
+        {
+            EditorUserBuildSettings.SwitchActiveBuildTarget(build_group, build_target);
+            var report = BuildPipeline.BuildPlayer(scenes, target_dir, build_target, build_options);
+            
+            // Unity 6+ BuildReport is never null, check result instead
+            if (report != null && report.summary.result == BuildResult.Succeeded)
+            {
+                Debug.Log("Build Result - " + report.summary.result + "\n" +
+                          "Build Start - " + report.summary.buildStartedAt + "\n" +
+                          "Build End - " + report.summary.buildEndedAt + "\n" +
+                          "Build Size - " + report.summary.totalSize + "\n" +
+                          "Build Error Count - " + report.summary.totalErrors);
+            }
+            else if (report != null)
+            {
+                Debug.LogError("Build Failed! Result: " + report.summary.result + 
+                               "\nError Count: " + report.summary.totalErrors);
+            }
+        }
+        
+        static string GetDirectoryName()
+        {
+            var buildName = GetArg("BuildName");
+            var date = buildName.Split('_');
+            var folderName = date[2];
+
+            if (Directory.Exists(TARGET_DIR) == false)
+            {
+                Directory.CreateDirectory(TARGET_DIR);
             }
 
-            options.scenes = scenes.ToArray();
+            if (Directory.Exists(TARGET_DIR + "/" + folderName) == false)
+            {
+                Directory.CreateDirectory(TARGET_DIR + "/" + folderName);
+            }
 
-            // 2. 결과물 경로 및 이름 지정 (확장자는 .exe를 붙이지 않습니다)
-            options.locationPathName = "Builds/MyGame/MyGame.exe";
-
-            // 3. 빌드 타겟을 Windows 64비트로 지정
-            options.target = BuildTarget.StandaloneWindows64;
-
-            //options.targetGroup = BuildTargetGroup.Standalone;
-
-            options.options = BuildOptions.None; // 기본 옵션
-
-            BuildPipeline.BuildPlayer(options);
+            return TARGET_DIR + "/" + folderName;
         }
+        
+        
+        static string GetArg(string name)
+        {
+            string[] arguments = Environment.GetCommandLineArgs();
+
+            for (int nIndex = 0; nIndex < arguments.Length; ++nIndex)
+            {
+                if (arguments[nIndex] == name && arguments.Length > nIndex + 1)
+                {
+                    Debug.LogError(name + ", " + arguments[nIndex + 1]);
+
+                    return arguments[nIndex + 1];
+                }
+            }
+
+            Debug.LogError(string.Format("not found arg '{0}'", name));
+
+            return null;
+        }
+
+
     }
 }
 
