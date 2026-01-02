@@ -26,7 +26,7 @@ pipeline {
         stage('Unity Build') {
             steps {
                 script {
-                    // 1. 날짜 기반 빌드 이름 생성
+                    // 1. 빌드 씬 설정
                     def packageType = "FullPack"
 
                     // 2. 유니티 호출 (StartBuildProcess 메서드 실행)
