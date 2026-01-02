@@ -19,7 +19,6 @@ namespace Editor
     {
         static string TARGET_DIR;
         static string COMPLETE_DIR;
-        static string[] SCENES = FindEnabledEditorScenes();
         
         public static void StartBuildProcess()
         {
@@ -35,18 +34,19 @@ namespace Editor
 
 		static void PerformWindowsBuild()
         {
-            var BuildName = PlayerSettings.productName;
-            var targetDirectory = COMPLETE_DIR + "/" + BuildName + ".exe";
+            var buildName = PlayerSettings.productName;
+            var targetDirectory = COMPLETE_DIR + "/" + buildName + ".exe";
+            var scenes = FindEnabledEditorScenes();
 
-            GenericBuild(SCENES, targetDirectory, BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, BuildOptions.None);
+            GenericBuild(scenes, targetDirectory, BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, BuildOptions.None);
         }
         
         private static string[] FindEnabledEditorScenes()
         {
-            List<string> EditorScenes = new List<string>();
+            List<string> editorScenes = new List<string>();
             EditorBuildSettingsScene[] ebssArray = new EditorBuildSettingsScene[EditorBuildSettings.scenes.Length];
-            var AssetPackage = (AssetPackageType)Enum.Parse(typeof(AssetPackageType), GetArg("AssetPackage"));
-            var sceneOrder = AssetPackage == AssetPackageType.BundlesPack ? 2 : EditorBuildSettings.scenes.Length - 1;
+            var assetPackage = (AssetPackageType)Enum.Parse(typeof(AssetPackageType), GetArg("AssetPackage"));
+            var sceneOrder = assetPackage == AssetPackageType.BundlesPack ? 2 : EditorBuildSettings.scenes.Length - 1;
 
             for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
             {
@@ -57,11 +57,11 @@ namespace Editor
 
                 if (enableScene)
                 {
-                    EditorScenes.Add(curScene.path);
+                    editorScenes.Add(curScene.path);
                 }
             }
             EditorBuildSettings.scenes = ebssArray;
-            return EditorScenes.ToArray();
+            return editorScenes.ToArray();
         }
         
         static void GenericBuild(string[] scenes, string target_dir, BuildTargetGroup build_group, BuildTarget build_target, BuildOptions build_options)

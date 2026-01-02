@@ -26,16 +26,16 @@ pipeline {
         stage('Unity Build') {
             steps {
                 script {
-                    // 1. 날짜 기반 빌드 이름 생성
+                    // 1. 빌드 씬 설정
                     def packageType = "FullPack"
 
                     // 2. 유니티 호출 (StartBuildProcess 메서드 실행)
                     // 내부에서 SetTargetDirectory()와 PerformWindosBuild()가 모두 실행됩니다.
                     bat """
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
-                        -executeMethod Editor.BuildScript.StartBuildProcess -logFile - \
+                        -executeMethod Editor.BuildScript.StartBuildProcess \
                         -BuildName ${env.BUILD_NAME_ARG} \
-                        -AssetPackage ${packageType}
+                        -AssetPackage ${packageType} \
                     """
                 }
             }
