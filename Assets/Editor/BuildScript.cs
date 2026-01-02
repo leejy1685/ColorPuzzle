@@ -26,9 +26,10 @@ namespace Editor
 
 		static void PerformWindowsBuild()
         {
+            var scenes = FindEnabledEditorScenes();
+            
             var buildName = PlayerSettings.productName;
             var targetDirectory = COMPLETE_DIR + "/" + buildName + ".exe";
-            var scenes = FindEnabledEditorScenes();
 
             GenericBuild(scenes, targetDirectory, BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, BuildOptions.None);
         }
@@ -58,7 +59,7 @@ namespace Editor
         
         static string GetDirectoryName()
         {
-            var buildName = GetArg("BuildName");
+            var buildName = GetArg("-BuildName");
             var date = buildName.Split('_');
             var folderName = date[2];
 

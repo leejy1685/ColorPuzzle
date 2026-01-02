@@ -34,7 +34,7 @@ pipeline {
                     bat """
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
-                        BuildName ${env.BUILD_NAME_ARG} 
+                        -BuildName ${env.BUILD_NAME_ARG} 
                     """
                 }
             }
