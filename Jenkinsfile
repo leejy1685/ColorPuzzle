@@ -47,19 +47,16 @@ pipeline {
                     // 3. 유니티 스크립트의 COMPLETE_DIR(/outputs/날짜) 경로를 압축
                     // COMPLETE_DIR 내부의 결과물들을 zip 하나로 묶습니다.
                     bat "powershell \"Compress-Archive -Path outputs/${env.BUILD_DATE}/* -DestinationPath ColorPuzzle.zip -Force\""
-                    
-                    // 4. 젠킨스 빌드 결과물로 zip 파일 보관
-                    archiveArtifacts artifacts: 'ColorPuzzle.zip', followSymlinks: false
 
-                    // 5. GitHub CLI를 사용한 릴리스 생성 및 파일 업로드
+                    // 4. GitHub CLI를 사용한 릴리스 생성 및 파일 업로드
                     // --generate-notes: 커밋 내역 자동 생성
-                    // --clobber 기존 릴리스 덮어쓰기
                     withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
                         bat """
-                            gh release create latest ColorPuzzle.zip \
-                            --title "Build #${env.BUILD_NUMBER} (${env.BUILD_DATE})" \
-                            --generate-notes \
-                            --clobber
+                            gh release delete latest -y --cleanup-tag || echo "No existing release"
+                            
+                            gh release create latest ColorPuzzle.zip ^
+                            --title "Build #${env.BUILD_NUMBER} (${env.BUILD_DATE})" ^
+                            --generate-notes
                         """
                     }
                 }
