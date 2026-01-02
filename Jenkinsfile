@@ -33,9 +33,9 @@ pipeline {
                     // 내부에서 SetTargetDirectory()와 PerformWindosBuild()가 모두 실행됩니다.
                     bat """
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
-                        -executeMethod Editor.BuildScript.StartBuildProcess -logFile - \
+                        -executeMethod Editor.BuildScript.StartBuildProcess \
                         -BuildName ${env.BUILD_NAME_ARG} \
-                        -AssetPackage ${packageType}
+                        -AssetPackage ${packageType} \
                     """
                 }
             }
