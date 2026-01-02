@@ -44,5 +44,6 @@ public class Cell : MonoBehaviour,IPointerEnterHandler,IPointerDownHandler
                 return;
             OnCellClicked.Invoke();
         }
+        
     }
 }
