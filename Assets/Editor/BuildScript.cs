@@ -19,7 +19,7 @@ namespace Editor
         
         public static void StartBuildProcess()
         {
-            SyncJenkinsEnvironment();
+            //SyncJenkinsEnvironment();
             SetTargetDirectory();
             
             var platform = ParseBuildPlatform();
@@ -51,6 +51,7 @@ namespace Editor
                     break;
                 
                 case BuildPlatform.Android:
+                    SyncJenkinsEnvironment();
                     targetDirectory = COMPLETE_DIR + "/" + buildName + ".apk";
                     buildGroup = BuildTargetGroup.Android;
                     buildTarget = BuildTarget.Android;
