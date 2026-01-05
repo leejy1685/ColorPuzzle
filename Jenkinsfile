@@ -41,7 +41,8 @@ pipeline {
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
                         -BuildName ${env.BUILD_NAME_ARG} \
-                        -CustomPlatform ${env.BUILD_TARGET}
+                        -CustomPlatform ${env.BUILD_TARGET} \
+                        -logFile -
                     """
                 }
             }
