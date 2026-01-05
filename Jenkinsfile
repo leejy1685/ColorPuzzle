@@ -36,7 +36,6 @@ pipeline {
                     bat """
                         set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
-                        set GRADLE_OPTS="-Dhttps.protocols=TLSv1.2,TLSv1.3"
 
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
