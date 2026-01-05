@@ -33,10 +33,11 @@ pipeline {
             steps {
                 script {
                     // 1. 유니티 호출 (StartBuildProcess 메서드 실행)
-                    // 내부에서 SetTargetDirectory()와 PerformWindosBuild()가 모두 실행됩니다.
                     bat """
-                        set JAVA_HOME=C:\\tool\\jdk-11
+                        set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
+
+                        set GRADLE_OPTS="-Dhttps.protocols=TLSv1.2,TLSv1.3"
 
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
