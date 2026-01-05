@@ -4,9 +4,14 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+public enum BuildPlatform
+{
+    Windows,
+    Android
+}
+
 namespace Editor
 {
-    
     public class BuildScript
     {
         static string TARGET_DIR;
@@ -15,7 +20,8 @@ namespace Editor
         public static void StartBuildProcess()
         {
             SetTargetDirectory();
-            PerformWindowsBuild();
+            var platform = ParseBuildPlatform();
+            PerformBuild(platform);
         }
 
         static void SetTargetDirectory()
@@ -24,13 +30,33 @@ namespace Editor
             COMPLETE_DIR = GetDirectoryName();
         }
 
-		static void PerformWindowsBuild()
+		static void PerformBuild(BuildPlatform platform)
         {
-            var buildName = PlayerSettings.productName;
-            var targetDirectory = COMPLETE_DIR + "/" + buildName + ".exe";
             var scenes = FindEnabledEditorScenes();
+            
+            var buildName = PlayerSettings.productName;
 
-            GenericBuild(scenes, targetDirectory, BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64, BuildOptions.None);
+            string targetDirectory = string.Empty;
+            BuildTargetGroup buildGroup = BuildTargetGroup.Standalone;
+            BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
+
+            switch (platform)
+            {
+                case BuildPlatform.Windows:
+                    targetDirectory = COMPLETE_DIR + "/" + buildName + ".exe";
+                    buildGroup = BuildTargetGroup.Standalone;
+                    buildTarget = BuildTarget.StandaloneWindows64;
+                    break;
+                
+                case BuildPlatform.Android:
+                    targetDirectory = COMPLETE_DIR + "/" + buildName + ".apk";
+                    buildGroup = BuildTargetGroup.Android;
+                    buildTarget = BuildTarget.Android;
+                    break;
+                    
+            }
+            
+            GenericBuild(scenes, targetDirectory, buildGroup, buildTarget, BuildOptions.None);
         }
         
         private static string[] FindEnabledEditorScenes()
@@ -58,7 +84,7 @@ namespace Editor
         
         static string GetDirectoryName()
         {
-            var buildName = GetArg("BuildName");
+            var buildName = GetArg("-BuildName");
             var date = buildName.Split('_');
             var folderName = date[2];
 
@@ -74,6 +100,19 @@ namespace Editor
 
             return TARGET_DIR + "/" + folderName;
         }
+        
+        static BuildPlatform ParseBuildPlatform()
+        {
+            // 빌드 플랫폼 파싱
+            var platformArg = GetArg("-BuildTarget");
+            
+            if (Enum.TryParse(platformArg, out BuildPlatform platform))
+                return platform;
+
+            Debug.LogError($"Invalid build platform: {platformArg}. Defaulting to Windows.");
+            return BuildPlatform.Windows;   //기본값
+        }
+
         
         
         static string GetArg(string name)
