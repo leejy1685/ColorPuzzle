@@ -34,9 +34,11 @@ pipeline {
                 script {
                     // 1. 유니티 호출 (StartBuildProcess 메서드 실행)
                     bat """
+                        if exist "Library/Bee" rd /s /q "Library/Bee"
+                        if exist "Library/Android" rd /s /q "Library/Android"
+
                         set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
-
                         set GRADLE_OPTS="-Dhttps.protocols=TLSv1.2,TLSv1.3"
 
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
