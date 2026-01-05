@@ -79,7 +79,18 @@ namespace Editor
         static void GenericBuild(string[] scenes, string target_dir, BuildTargetGroup build_group, BuildTarget build_target, BuildOptions build_options)
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(build_group, build_target);
-            BuildPipeline.BuildPlayer(scenes, target_dir, build_target, build_options);
+            // 빌드 결과 리포트를 받습니다.
+            var report = BuildPipeline.BuildPlayer(scenes, target_dir, build_target, build_options);
+            var summary = report.summary;
+
+            if (summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+            {
+                Debug.Log($"빌드 성공: {summary.totalSize} bytes, 경로: {target_dir}");
+            }
+            else if (summary.result == UnityEditor.Build.Reporting.BuildResult.Failed)
+            {
+                Debug.LogError($"빌드 실패! 에러 개수: {summary.totalErrors}");
+            }
         }
         
         static string GetDirectoryName()
