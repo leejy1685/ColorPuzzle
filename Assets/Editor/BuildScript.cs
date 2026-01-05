@@ -49,6 +49,7 @@ namespace Editor
                     break;
                 
                 case BuildPlatform.Android:
+                    SyncJenkinsEnvironment();
                     targetDirectory = COMPLETE_DIR + "/" + buildName + ".apk";
                     buildGroup = BuildTargetGroup.Android;
                     buildTarget = BuildTarget.Android;
@@ -91,14 +92,15 @@ namespace Editor
             {
                 Debug.LogError($"빌드 실패! 에러 개수: {summary.totalErrors}");
                 
-                // 상세 에러 내용을 루프 돌며 출력
+                // 2. 각 단계별 결과와 메시지 상세 출력
                 foreach (var step in report.steps)
                 {
-                    foreach (var message in step.messages)
+                    foreach (var msg in step.messages)
                     {
-                        if (message.type == LogType.Error)
+                        // Error뿐만 아니라 Warning도 함께 출력하면 원인 파악이 쉬움
+                        if (msg.type == LogType.Error || msg.type == LogType.Exception)
                         {
-                            Debug.LogError($"상세 에러: {message.content}");
+                            Debug.LogError($"[DETAIL ERROR] {msg.content}");
                         }
                     }
                 }
@@ -158,7 +160,30 @@ namespace Editor
         }
 
 
+        static void SyncJenkinsEnvironment()
+        {
+            // 젠킨스에서 넘겨준 환경변수를 읽어서 유니티 경로 설정에 덮어씌움
+            string jdkPath = EditorPrefs.GetString("JdkRoot");
+            if (string.IsNullOrEmpty(jdkPath))
+                jdkPath = Environment.GetEnvironmentVariable("JAVA_HOME");
+            
+            string sdkPath = EditorPrefs.GetString("AndroidSdkRoot");
+            if (string.IsNullOrEmpty(sdkPath))
+                sdkPath = Environment.GetEnvironmentVariable("ANDROID_SDK_ROOT");
+
+            string ndkPath = EditorPrefs.GetString("AndroidNdkRoot");
+            if (string.IsNullOrEmpty(ndkPath))
+                ndkPath = Environment.GetEnvironmentVariable("ANDROID_NDK_HOME");
+                
+            if (!string.IsNullOrEmpty(jdkPath)) EditorPrefs.SetString("JdkRoot", jdkPath);
+            if (!string.IsNullOrEmpty(sdkPath)) EditorPrefs.SetString("AndroidSdkRoot", sdkPath);
+            if (!string.IsNullOrEmpty(ndkPath)) EditorPrefs.SetString("AndroidNdkRoot", ndkPath);
+    
+            Debug.Log($"[Jenkins Sync] JDK: {jdkPath}, SDK: {sdkPath}");
+        }
     }
+    
+    
 }
 
 

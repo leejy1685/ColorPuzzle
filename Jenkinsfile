@@ -10,7 +10,12 @@ pipeline {
     environment {
         // Unity 설치 경로 설정
         UNITY_EXE = 'C:\\Program Files\\Unity 2022.3.17f1\\Editor\\Unity.exe'
-        // Jenkins에 만든 권한과 이름이 일치해야함.
+
+        // Android SDK
+        JAVA_HOME = 'C:\\tool\\jdk-11'
+        ANDROID_SDK_ROOT = 'C:\\tool\\SDK'
+        ANDROID_NDK_HOME = 'C:\\tool\\SDK\\ndk\\23.1.7779620'
+
         BUILD_DATE = "${new Date().format('yyyyMMdd')}"
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
         BUILD_TARGET = "Android"
