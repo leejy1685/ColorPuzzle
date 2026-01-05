@@ -13,6 +13,7 @@ pipeline {
         // Jenkins에 만든 권한과 이름이 일치해야함.
         BUILD_DATE = "${new Date().format('yyyyMMdd')}"
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
+        BUILD_TARGET = "Windows"
     }
 
     stages {
@@ -34,7 +35,8 @@ pipeline {
                     bat """
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
-                        -BuildName ${env.BUILD_NAME_ARG} 
+                        -BuildName ${env.BUILD_NAME_ARG} \
+                        -BuildTarget ${env.BUILD_TARGET}
                     """
                 }
             }
