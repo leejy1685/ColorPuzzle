@@ -32,12 +32,12 @@ pipeline {
         stage('Unity Build') {
             steps {
                 script {
-                    // 1. 빌드 씬 설정
-                    def packageType = "FullPack"
-
-                    // 2. 유니티 호출 (StartBuildProcess 메서드 실행)
+                    // 1. 유니티 호출 (StartBuildProcess 메서드 실행)
                     // 내부에서 SetTargetDirectory()와 PerformWindosBuild()가 모두 실행됩니다.
                     bat """
+                        set JAVA_HOME=C:\\tool\\jdk-11
+                        set PATH=%JAVA_HOME%\\bin;%PATH%
+
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
                         -BuildName ${env.BUILD_NAME_ARG} \
