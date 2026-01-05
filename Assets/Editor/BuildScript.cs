@@ -104,7 +104,7 @@ namespace Editor
         static BuildPlatform ParseBuildPlatform()
         {
             // 빌드 플랫폼 파싱
-            var platformArg = GetArg("-BuildTarget");
+            var platformArg = GetArg("-CustomPlatform");
             
             if (Enum.TryParse(platformArg, out BuildPlatform platform))
                 return platform;
