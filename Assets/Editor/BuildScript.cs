@@ -90,6 +90,18 @@ namespace Editor
             else if (summary.result == UnityEditor.Build.Reporting.BuildResult.Failed)
             {
                 Debug.LogError($"빌드 실패! 에러 개수: {summary.totalErrors}");
+                
+                // 상세 에러 내용을 루프 돌며 출력
+                foreach (var step in report.steps)
+                {
+                    foreach (var message in step.messages)
+                    {
+                        if (message.type == LogType.Error)
+                        {
+                            Debug.LogError($"상세 에러: {message.content}");
+                        }
+                    }
+                }
             }
         }
         
