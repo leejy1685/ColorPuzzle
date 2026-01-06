@@ -19,7 +19,7 @@ namespace Editor
         
         public static void StartBuildProcess()
         {
-            //SyncJenkinsEnvironment();
+            SetAndroidSDKPaths();
             SetTargetDirectory();
             
             var platform = ParseBuildPlatform();
@@ -51,7 +51,6 @@ namespace Editor
                     break;
                 
                 case BuildPlatform.Android:
-                    //SetAndroidSDKPaths();
                     targetDirectory = COMPLETE_DIR + "/" + buildName + ".apk";
                     buildGroup = BuildTargetGroup.Android;
                     buildTarget = BuildTarget.Android;
@@ -164,23 +163,20 @@ namespace Editor
 
         static void SetAndroidSDKPaths()
         {
-            // 젠킨스에서 넘겨준 환경변수를 읽어서 유니티 경로 설정에 덮어씌움
-            string jdkPath = EditorPrefs.GetString("JdkRoot");
-            string sdkPath = EditorPrefs.GetString("AndroidSdkRoot");
-            string ndkPath = EditorPrefs.GetString("AndroidNdkRoot");
-            
-            if (string.IsNullOrEmpty(jdkPath))
-                jdkPath = Environment.GetEnvironmentVariable("JAVA_HOME");
-            if (string.IsNullOrEmpty(sdkPath))
-                sdkPath = Environment.GetEnvironmentVariable("ANDROID_SDK_ROOT");
-            if (string.IsNullOrEmpty(ndkPath))
-                ndkPath = Environment.GetEnvironmentVariable("ANDROID_NDK_HOME");
-                
-            if (!string.IsNullOrEmpty(jdkPath)) EditorPrefs.SetString("JdkRoot", jdkPath);
-            if (!string.IsNullOrEmpty(sdkPath)) EditorPrefs.SetString("AndroidSdkRoot", sdkPath);
-            if (!string.IsNullOrEmpty(ndkPath)) EditorPrefs.SetString("AndroidNdkRoot", ndkPath);
-    
-            Debug.Log($"[Jenkins Sync] JDK: {jdkPath}, SDK: {sdkPath}");
+            // 1. 젠킨스 환경 변수를 최우선으로 가져옵니다.
+            string envJdk = Environment.GetEnvironmentVariable("JAVA_HOME");
+            string envSdk = Environment.GetEnvironmentVariable("ANDROID_SDK_ROOT");
+            string envNdk = Environment.GetEnvironmentVariable("ANDROID_NDK_HOME");
+
+            // 2. 환경 변수 값이 있을 때만 EditorPrefs를 갱신합니다.
+            // 이렇게 하면 젠킨스에서 경로를 바꾸면 유니티도 즉시 따라갑니다.
+            if (!string.IsNullOrEmpty(envJdk)) EditorPrefs.SetString("JdkRoot", envJdk);
+            if (!string.IsNullOrEmpty(envSdk)) EditorPrefs.SetString("AndroidSdkRoot", envSdk);
+            if (!string.IsNullOrEmpty(envNdk)) EditorPrefs.SetString("AndroidNdkRoot", envNdk);
+
+            // 최종적으로 유니티가 사용 중인 값을 출력합니다.
+            Debug.Log($"[Jenkins Sync] Current JDK: {EditorPrefs.GetString("JdkRoot")}");
+            Debug.Log($"[Jenkins Sync] Current SDK: {EditorPrefs.GetString("AndroidSdkRoot")}");
         }
     }
     
