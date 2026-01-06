@@ -51,7 +51,7 @@ namespace Editor
                     break;
                 
                 case BuildPlatform.Android:
-                    SetAndroidSDKPaths();
+                    //SetAndroidSDKPaths();
                     targetDirectory = COMPLETE_DIR + "/" + buildName + ".apk";
                     buildGroup = BuildTargetGroup.Android;
                     buildTarget = BuildTarget.Android;
