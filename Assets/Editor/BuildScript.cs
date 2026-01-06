@@ -51,7 +51,7 @@ namespace Editor
                     break;
                 
                 case BuildPlatform.Android:
-                    SyncJenkinsEnvironment();
+                    SetAndroidSDKPaths();
                     targetDirectory = COMPLETE_DIR + "/" + buildName + ".apk";
                     buildGroup = BuildTargetGroup.Android;
                     buildTarget = BuildTarget.Android;
@@ -162,7 +162,7 @@ namespace Editor
         }
 
 
-        static void SyncJenkinsEnvironment()
+        static void SetAndroidSDKPaths()
         {
             // 젠킨스에서 넘겨준 환경변수를 읽어서 유니티 경로 설정에 덮어씌움
             string jdkPath = EditorPrefs.GetString("JdkRoot");
