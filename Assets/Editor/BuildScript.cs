@@ -169,14 +169,13 @@ namespace Editor
             string envNdk = Environment.GetEnvironmentVariable("ANDROID_NDK_HOME");
 
             // 2. 환경 변수 값이 있을 때만 EditorPrefs를 갱신합니다.
-            // 이렇게 하면 젠킨스에서 경로를 바꾸면 유니티도 즉시 따라갑니다.
             if (!string.IsNullOrEmpty(envJdk)) EditorPrefs.SetString("JdkRoot", envJdk);
             if (!string.IsNullOrEmpty(envSdk)) EditorPrefs.SetString("AndroidSdkRoot", envSdk);
             if (!string.IsNullOrEmpty(envNdk)) EditorPrefs.SetString("AndroidNdkRoot", envNdk);
 
             // 최종적으로 유니티가 사용 중인 값을 출력합니다.
-            Debug.Log($"[Jenkins Sync] Current JDK: {EditorPrefs.GetString("JdkRoot")}");
-            Debug.Log($"[Jenkins Sync] Current SDK: {EditorPrefs.GetString("AndroidSdkRoot")}");
+            Debug.LogError($"[Jenkins Sync] Current JDK: {EditorPrefs.GetString("JdkRoot")}");
+            Debug.LogError($"[Jenkins Sync] Current SDK: {EditorPrefs.GetString("AndroidSdkRoot")}");
         }
     }
     
