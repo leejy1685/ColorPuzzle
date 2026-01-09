@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "485741715026",
+    "project_id": "unitycolorpuzzle",
+    "storage_bucket": "unitycolorpuzzle.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485741715026:android:113936cd99f728f11ec98b",
+        "android_client_info": {
+          "package_name": "Com.DefaultCompany.ColorPuzzle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjkQcJdViYSKjUugLMu4PlHWEWFVKai3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
