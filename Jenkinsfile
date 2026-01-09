@@ -24,7 +24,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                cleanWs() 
+                cleanWs(patterns: [
+                    [pattern: 'Assets/Firebase/Plugins/**', type: 'EXCLUDE']
+                ])
                 checkout scm
             }
         }
