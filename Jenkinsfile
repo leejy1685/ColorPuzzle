@@ -38,7 +38,7 @@ pipeline {
                         set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
 
-                        set GRADLE_OPTS=-Dhttps.protocols=TLSv1.2,TLSv1.3
+                        set GRADLE_OPTS=-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dorg.gradle.daemon=false
 
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
