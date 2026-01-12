@@ -35,6 +35,9 @@ pipeline {
                 script {
                     // 1. 유니티 호출 (StartBuildProcess 메서드 실행)
                     bat """
+                        ::오염된 Gradle 캐시 폴더 삭제하는 코드 (관리자 권한으로 실행)
+                        ::rd /s /q "C:\Windows\System32\config\systemprofile\.gradle\caches"
+
                         set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
 
