@@ -18,6 +18,8 @@ pipeline {
         BUILD_DATE = "${new Date().format('yyyyMMdd')}"
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
         BUILD_TARGET = "Android"
+
+        JAVA_TOOL_OPTIONS = "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dfile.encoding=UTF-8"
     }
 
     stages {
