@@ -19,7 +19,9 @@ pipeline {
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
         BUILD_TARGET = "Android"
 
+        
         JAVA_TOOL_OPTIONS = "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dfile.encoding=UTF-8"
+        GRADLE_OPTS = "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dorg.gradle.daemon=false"
     }
 
     stages {
@@ -39,8 +41,6 @@ pipeline {
                     bat """
                         set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
-
-                        set GRADLE_OPTS=-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dorg.gradle.daemon=false
 
                         "${UNITY_EXE}" -quit -batchmode -nographics -projectPath . \
                         -executeMethod Editor.BuildScript.StartBuildProcess \
