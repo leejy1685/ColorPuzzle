@@ -18,8 +18,6 @@ pipeline {
         BUILD_DATE = "${new Date().format('yyyyMMdd')}"
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
         BUILD_TARGET = "Android"
-
-        JAVA_TOOL_OPTIONS = "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dfile.encoding=UTF-8"
     }
 
     stages {
@@ -36,10 +34,7 @@ pipeline {
             steps {
                 script {
                     // 1. 유니티 호출 (StartBuildProcess 메서드 실행)
-                    bat """
-                        set JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dfile.encoding=UTF-8
-                        
-
+                    bat """  
                         set JAVA_HOME=${env.JAVA_HOME}
                         set PATH=%JAVA_HOME%\\bin;%PATH%
 
