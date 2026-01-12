@@ -11,7 +11,7 @@ pipeline {
         UNITY_EXE = 'C:\\Program Files\\Unity 2022.3.17f1\\Editor\\Unity.exe'
 
         // Android SDK
-        JAVA_HOME = 'C:\\tool\\jdk-11'
+        JAVA_HOME = 'C:\tool\jdk-11.0.29+7'
         ANDROID_SDK_ROOT = 'C:\\tool\\SDK'
         ANDROID_NDK_HOME = 'C:\\tool\\SDK\\ndk\\23.1.7779620'
 
