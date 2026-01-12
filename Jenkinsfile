@@ -20,7 +20,6 @@ pipeline {
         BUILD_TARGET = "Android"
 
         JAVA_TOOL_OPTIONS = "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dfile.encoding=UTF-8"
-        GRADLE_OPTS = "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Dorg.gradle.daemon=false"
     }
 
     stages {
