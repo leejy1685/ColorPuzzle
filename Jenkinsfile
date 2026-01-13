@@ -24,10 +24,15 @@ pipeline {
         stage('Checkout') {
             steps {
                 cleanWs(
-                    deleteDirs: false,
+                    deleteDirs: true,
                     patterns: [
-                        [pattern: 'Assets/Firebase', type: 'EXCLUDE']
-                    ])
+                        // 1. 살려야 할 파일들을 가장 먼저 선언 (전체 경로에 대해 와일드카드 적용)
+                        [pattern: '**/Assets/Firebase/Plugins/x86_64/**', type: 'EXCLUDE'],
+                
+                        // 2. 나머지는 다 지우기 (단, 위에서 제외한 패턴은 건드리지 않음)
+                        [pattern: '**/*', type: 'INCLUDE']
+                    ]
+                )
                 checkout scm
             }
         }
