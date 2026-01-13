@@ -26,11 +26,11 @@ pipeline {
                 cleanWs(
                     deleteDirs: true,
                     patterns: [
-                        // 1. 살려야 할 파일들을 가장 먼저 선언 (전체 경로에 대해 와일드카드 적용)
-                        [pattern: '**/Assets/Firebase/Plugins/x86_64/**', type: 'EXCLUDE'],
-                
-                        // 2. 나머지는 다 지우기 (단, 위에서 제외한 패턴은 건드리지 않음)
-                        [pattern: '**/*', type: 'INCLUDE']
+                        [pattern: 'Library/**', type: 'INCLUDE'],
+                        [pattern: 'Temp/**', type: 'INCLUDE'],
+                        [pattern: 'obj/**', type: 'INCLUDE'],
+                        [pattern: 'Logs/**', type: 'INCLUDE'],
+                        [pattern: 'outputs/**', type: 'INCLUDE']
                     ]
                 )
                 checkout scm
