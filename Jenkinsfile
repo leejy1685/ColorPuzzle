@@ -26,7 +26,7 @@ pipeline {
                 cleanWs(
                     deleteDirs: false,
                     patterns: [
-                        [pattern: 'Assets/Firebase/Plugins/x86_64/**', type: 'EXCLUDE']
+                        [pattern: 'Assets/Firebase', type: 'EXCLUDE']
                     ])
                 checkout scm
             }
