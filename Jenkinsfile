@@ -17,7 +17,7 @@ pipeline {
 
         BUILD_DATE = "${new Date().format('yyyyMMdd')}"
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
-        BUILD_TARGET = "Android"
+        BUILD_TARGET = "Windows"
     }
 
     stages {
