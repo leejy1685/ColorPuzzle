@@ -26,11 +26,8 @@ pipeline {
                 cleanWs(
                     deleteDirs: true,
                     patterns: [
-                        [pattern: 'Library/**', type: 'INCLUDE'],
-                        [pattern: 'Temp/**', type: 'INCLUDE'],
-                        [pattern: 'obj/**', type: 'INCLUDE'],
-                        [pattern: 'Logs/**', type: 'INCLUDE'],
-                        [pattern: 'outputs/**', type: 'INCLUDE']
+                        [pattern: 'outputs/**', type: 'INCLUDE'],
+                        [pattern: '*.zip', type: 'INCLUDE']
                     ]
                 )
                 checkout scm
