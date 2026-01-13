@@ -155,8 +155,8 @@ namespace Editor
 
         static void SetAndroidSDKPaths()
         {
-            //Gradle 생성 위치
-            //Environment.SetEnvironmentVariable("GRADLE_USER_HOME", @"C:\.gradle");
+            //Gradle 생성 위치 지정
+            Environment.SetEnvironmentVariable("GRADLE_USER_HOME", @"C:\.gradle");
             
             // 1. 젠킨스 환경 변수를 최우선으로 가져옵니다.
             string envJdk = Environment.GetEnvironmentVariable("JAVA_HOME");
