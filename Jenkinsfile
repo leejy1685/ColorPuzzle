@@ -17,14 +17,14 @@ pipeline {
 
         BUILD_DATE = "${new Date().format('yyyyMMdd')}"
         BUILD_NAME_ARG = "ColorPuzzle_Build_${BUILD_DATE}"
-        BUILD_TARGET = "Windows"
+        BUILD_TARGET = "Android"
     }
 
     stages {
         stage('Checkout') {
             steps {
                 cleanWs(patterns: [
-                    [pattern: 'Assets/Firebase/Plugins/**', type: 'EXCLUDE']
+                    [pattern: '**/Assets/Firebase/Plugins/**', type: 'EXCLUDE']
                 ])
                 checkout scm
             }
