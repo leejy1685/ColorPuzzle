@@ -86,11 +86,6 @@ namespace Editor
             if (build_target == BuildTarget.Android)
                 PerformAndroidResolve();
             
-            
-            
-            
-            
-            
             // 빌드 결과 리포트를 받습니다.
             var report = BuildPipeline.BuildPlayer(scenes, target_dir, build_target, build_options);
             var summary = report.summary;
