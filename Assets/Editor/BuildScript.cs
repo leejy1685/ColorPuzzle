@@ -90,11 +90,11 @@ namespace Editor
             var report = BuildPipeline.BuildPlayer(scenes, target_dir, build_target, build_options);
             var summary = report.summary;
 
-            if (summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+            if (summary.result == BuildResult.Succeeded)
             {
                 Debug.Log($"빌드 성공: {summary.totalSize} bytes, 경로: {target_dir}");
             }
-            else if (summary.result == UnityEditor.Build.Reporting.BuildResult.Failed)
+            else if (summary.result == BuildResult.Failed)
             {
                 Debug.LogError($"빌드 실패! 에러 개수: {summary.totalErrors}");
             }
