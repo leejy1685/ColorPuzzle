@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class StageSaveLoader
 {
-    private static readonly string FILE_PATH = $"{Application.dataPath}\\Stages.json";
+    private static readonly string FILE_PATH = Path.Combine(Application.persistentDataPath,"Stages.json");
     
     private static List< StageData> _stages;
     public static List< StageData> Stages
