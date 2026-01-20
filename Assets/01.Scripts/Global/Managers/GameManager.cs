@@ -47,18 +47,14 @@ public class GameManager : MonoBehaviour
 
     private async void FileLoad()
     {
-        Debug.Log("스테이지 데이터 로딩을 시작합니다...");
         try
         {
-            var loadedStages = await StageSaveLoader.LoadStagesAsync();
-            
-            Debug.Log($"스테이지 로딩 완료! 로드된 스테이지 개수: {loadedStages.Count}");
+            await StageSaveLoader.LoadStagesAsync();
         }
         catch (Exception e)
         {
             Debug.LogError($"스테이지 로딩에 실패했습니다: {e.Message}");
         }
-
     }
 
     private void OnDestroy()
