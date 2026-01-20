@@ -9,8 +9,11 @@ public class LimitedChances : MonoBehaviour
     private int _firstChances;
     private TextMeshProUGUI _text;
     private int _chances;
+    private int _resetCount;
 
     public int Chances => _chances;
+    public int ResetCount => _resetCount;
+    public int FirstChances => _firstChances;
     
     
     private void Awake()
@@ -19,6 +22,7 @@ public class LimitedChances : MonoBehaviour
         
         _chances = _firstChances;
         _text.text = _chances.ToString();
+        _resetCount = 0;
     }
 
     public void SetChances(int chances)
@@ -38,6 +42,7 @@ public class LimitedChances : MonoBehaviour
     {
         _chances = _firstChances;
         _text.text = _chances.ToString();
+        _resetCount++;
     }
     
     
