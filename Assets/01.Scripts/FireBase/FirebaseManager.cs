@@ -1,5 +1,6 @@
 using UnityEngine;
 using Firebase;
+using Firebase.Extensions;
 
 
 public class FirebaseManager : MonoBehaviour
@@ -10,14 +11,22 @@ public class FirebaseManager : MonoBehaviour
         get
         {
             if (_instance == null)
+            {
                 _instance = FindObjectOfType<FirebaseManager>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("FirebaseManager");
+                    _instance = go.AddComponent<FirebaseManager>();
+                    go.AddComponent<AnalyticManager>(); 
+                }
+            }
+
             return _instance;
         }
     }
     
     
     private AnalyticManager _analytic;
-    
     public AnalyticManager Analytic => _analytic;
 
     private void Awake()
@@ -37,7 +46,7 @@ public class FirebaseManager : MonoBehaviour
     void Start()
     {
         // 1. Firebase 종속성 및 상태 확인
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => 
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => 
         {
             var dependencyStatus = task.Result;
             
