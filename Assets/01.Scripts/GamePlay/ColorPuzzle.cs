@@ -14,6 +14,8 @@ public class ColorPuzzle : MonoBehaviour
     private TargetColorText _targetColorText;
     private PopUpTexts _popUpTexts;
     private BackButton _backButton;
+    
+    private float _startTime;
 
     private void Awake()
     {
@@ -35,6 +37,8 @@ public class ColorPuzzle : MonoBehaviour
         RegisterBackButton();
         
         GameStart();
+        
+        _startTime = Time.time;
     }
 
     private void OnDestroy()
@@ -193,6 +197,14 @@ public class ColorPuzzle : MonoBehaviour
             alertPopUp.SetDescription(_popUpTexts.CompleteText);
             alertPopUp.OkButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
         }
+        
+        //Firebase 분석 로그
+        int stageId = GameManager.Instance.StageNum + 1;
+        float clearTime = Time.time - _startTime;
+        int usedChance =  _limitedChances.FirstChances - _limitedChances.Chances;
+        int retryCount = _limitedChances.ResetCount;
+        
+        FirebaseManager.Instance.Analytic.StageClearLog(stageId, clearTime, usedChance, retryCount);
     }
     
     private async void FailPopUp()

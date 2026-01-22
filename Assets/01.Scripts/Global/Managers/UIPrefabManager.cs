@@ -94,7 +94,6 @@ public class UIPrefabManager : MonoBehaviour
             }
             return null;
         }
-        
     }
     
     public void CloseUI(GameObject instance)
