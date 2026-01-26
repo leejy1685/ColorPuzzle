@@ -180,9 +180,12 @@ public class ColorPuzzle : MonoBehaviour
                     clear = false;
             }
         }
-        
-        if(clear)
+
+        if (clear)
+        {
             ClearPopUp();
+            EventLogStageClear();
+        }
         else if(_limitedChances.Chances == 0)
             FailPopUp();
     }
@@ -197,7 +200,10 @@ public class ColorPuzzle : MonoBehaviour
             alertPopUp.SetDescription(_popUpTexts.CompleteText);
             alertPopUp.OkButton.onClick.AddListener(() => SceneMng.ChangeScene(SceneName.LobbyScene));
         }
-        
+    }
+
+    private void EventLogStageClear()
+    {
         //Firebase 분석 로그
         int stageId = GameManager.Instance.StageNum + 1;
         float clearTime = Time.time - _startTime;
