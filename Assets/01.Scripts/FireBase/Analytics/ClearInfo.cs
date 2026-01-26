@@ -23,6 +23,4 @@ public class ClearInfo
         new Parameter("TryCount", _retryCount)
     };
     
-
-
 }

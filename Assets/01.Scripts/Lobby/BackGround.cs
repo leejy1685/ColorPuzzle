@@ -39,8 +39,11 @@ public class BackGround : MonoBehaviour
 
     private void ApplyScreenRatio()
     {
-        float cellWidth = (float)Screen.width / WIDTH - 10;
-        float cellHeight = (float)Screen.height / HEIGHT - 10;
+        float xSpacing = _gridLayoutGroup.spacing.x;
+        float ySpacing = _gridLayoutGroup.spacing.y;
+
+        float cellWidth = (float)Screen.width / WIDTH - xSpacing;
+        float cellHeight = (float)Screen.height / HEIGHT - ySpacing;
         
         _gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
     }
