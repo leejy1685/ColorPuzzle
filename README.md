@@ -30,7 +30,7 @@ Flood Fill 알고리즘의 컬러 퍼즐 게임입니다.
 - Addressable
 - ObjectPool
 - UniTask
-- NewtonJson
+- Newtonsoft.Json
 - Firebase (데이터 수집 목적)
 - Jenkins
  
