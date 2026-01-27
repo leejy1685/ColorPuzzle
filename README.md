@@ -32,6 +32,7 @@ Flood Fill 알고리즘의 컬러 퍼즐 게임입니다.
 - UniTask
 - NewtonJson
 - Firebase (데이터 수집 목적)
+- Jenkins
  
 ### 개발 환경
 - Unity 2022.3.17f1
